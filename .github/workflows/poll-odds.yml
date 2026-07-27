@@ -21,9 +21,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      # v5/v6 run natively on Node 24. The older v4/v5 pair still works but
+      # GitHub force-runs them on Node 24 and warns; pinning here removes the
+      # warning and avoids a break when the compatibility shim is withdrawn.
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
           cache: pip
