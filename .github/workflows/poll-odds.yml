@@ -48,16 +48,20 @@ jobs:
             git add data
             if ! git diff --cached --quiet; then
               git commit -m "odds: poll $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+              OK=0
               for a in 1 2 3; do
                 git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && \
-                git push origin "HEAD:${GITHUB_REF_NAME}" && break
+                git push origin "HEAD:${GITHUB_REF_NAME}" && OK=1 && break
                 echo "push attempt $a failed, retrying"; sleep 5
               done
+              # a silently-lost push means lost data — surface it (V3 P1)
+              [ "$OK" -ne 1 ] && echo "PUSH_FAIL=1" >> "$GITHUB_ENV"
             else
               echo "no new rows on poll $i"
             fi
             [ "$i" -lt 5 ] && sleep 600
           done
+          [ -z "$PUSH_FAIL" ] || { echo "::error::a poll commit failed to push"; exit 1; }
 
       - name: Flag scraper failures
         if: env.BFO_FAILED || env.PIN_FAILED
