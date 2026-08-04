@@ -1,11 +1,13 @@
 name: poll-odds
 
-# Every 20 minutes. GitHub's scheduler is best-effort and can lag under load,
-# which is fine — each row carries its own poll_time, so an irregular cadence
-# just means irregular sampling, never wrong timestamps.
+# GitHub throttles cron hard (we measured ~13 fired runs/day on "*/20").
+# Fix: request HOURLY runs, and each run polls in an INTERNAL LOOP —
+# 5 polls ~10 minutes apart, committing after each. Effective data cadence
+# ~10 min whenever a run fires, even if the scheduler skips slots.
+# Each row carries its own poll_time, so irregular cadence never corrupts data.
 on:
   schedule:
-    - cron: "*/20 * * * *"
+    - cron: "0 * * * *"
   workflow_dispatch: {}          # allow manual runs from the Actions tab
 
 # Never let two polls race on the same branch.
@@ -19,7 +21,7 @@ permissions:
 jobs:
   poll:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 58
     steps:
       # v5/v6 run natively on Node 24. The older v4/v5 pair still works but
       # GitHub force-runs them on Node 24 and warns; pinning here removes the
@@ -33,41 +35,37 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      # Sources are independent: if one book's site changes shape, the other
-      # must still record. `|| true` keeps a single failure from losing the poll,
-      # and the step summary flags it.
-      - name: Poll BestFightOdds (primary)
-        id: bfo
-        run: python poll_bfo.py --out-dir data || echo "BFO_FAILED=1" >> "$GITHUB_ENV"
-
-      - name: Poll Pinnacle (secondary)
-        id: pin
-        run: python poll_pinnacle.py --out-dir data || echo "PIN_FAILED=1" >> "$GITHUB_ENV"
-
-      - name: Commit new quotes
+      # 5 polls per run, ~10 min apart, committing after each so data lands
+      # even if a later iteration (or the whole runner) dies mid-run.
+      - name: Poll loop
         run: |
           git config user.name  "odds-capture-bot"
           git config user.email "actions@github.com"
-          git add data
-          if git diff --cached --quiet; then
-            echo "no new rows this poll"
-            exit 0
-          fi
-          git commit -m "odds: poll $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          # Another poll may have landed while we ran; rebase then push.
-          for i in 1 2 3; do
-            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && \
-            git push origin "HEAD:${GITHUB_REF_NAME}" && break
-            echo "push attempt $i failed, retrying"; sleep 5
+          for i in 1 2 3 4 5; do
+            echo "=== poll $i of 5 ==="
+            python poll_bfo.py --out-dir data || echo "BFO_FAILED=1" >> "$GITHUB_ENV"
+            python poll_pinnacle.py --out-dir data || echo "PIN_FAILED=1" >> "$GITHUB_ENV"
+            git add data
+            if ! git diff --cached --quiet; then
+              git commit -m "odds: poll $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+              for a in 1 2 3; do
+                git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && \
+                git push origin "HEAD:${GITHUB_REF_NAME}" && break
+                echo "push attempt $a failed, retrying"; sleep 5
+              done
+            else
+              echo "no new rows on poll $i"
+            fi
+            [ "$i" -lt 5 ] && sleep 600
           done
 
       - name: Flag scraper failures
         if: env.BFO_FAILED || env.PIN_FAILED
         run: |
           {
-            echo "### Scraper problems this poll"
-            [ -n "$BFO_FAILED" ] && echo "- **BFO poll failed** — layout may have changed"
-            [ -n "$PIN_FAILED" ] && echo "- Pinnacle poll failed"
+            echo "### Scraper problems this run"
+            [ -n "$BFO_FAILED" ] && echo "- **BFO poll failed at least once** — layout may have changed"
+            [ -n "$PIN_FAILED" ] && echo "- Pinnacle poll failed at least once"
           } >> "$GITHUB_STEP_SUMMARY"
           # Fail the run only if the PRIMARY source broke.
           [ -z "$BFO_FAILED" ]
