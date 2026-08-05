@@ -2,3 +2,4 @@
 *.pyc
 .env
 
+movement/state/new_alerts.json

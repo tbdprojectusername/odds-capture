@@ -17,6 +17,7 @@ concurrency:
 
 permissions:
   contents: write                # required to commit the captured data back
+  issues: write                  # movement scorer opens one issue per new signal
 
 jobs:
   poll:
@@ -62,6 +63,46 @@ jobs:
             [ "$i" -lt 5 ] && sleep 600
           done
           [ -z "$PUSH_FAIL" ] || { echo "::error::a poll commit failed to push"; exit 1; }
+
+      # MOV-HOLD-2 scorer: runs on the data just committed. Fail-soft — a scorer
+      # problem must never take down the capture job (data > signals).
+      - name: Score movement signals
+        run: |
+          python movement/score_signals.py || { echo "SCORE_FAILED=1" >> "$GITHUB_ENV"; exit 0; }
+          git add movement/state movement/ledger
+          if ! git diff --cached --quiet; then
+            git commit -m "movement: signals $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            for a in 1 2 3; do
+              git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && \
+              git push origin "HEAD:${GITHUB_REF_NAME}" && break
+              echo "push attempt $a failed, retrying"; sleep 5
+            done
+          fi
+
+      - name: Open issues for new signals
+        if: env.SCORE_FAILED != '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import json, subprocess, pathlib
+          p = pathlib.Path("movement/state/new_alerts.json")
+          alerts = json.loads(p.read_text()) if p.exists() else []
+          for a in alerts:
+              act = "ACTIONABLE NOW" if a["actionable_now"] else "WATCH (price below minimum)"
+              title = f"[{a['tier']}] {a['selected_fighter']} ({a['selected_side']}) >= {a['min_acceptable_dec']} ({a['min_acceptable_amer']}) — {act}"
+              body = "\n".join([
+                  f"**Event start:** {a['event_start']}",
+                  f"**Bet:** {a['selected_fighter']} ({a['selected_side']}, tier {a['tier']})",
+                  f"**Minimum acceptable price:** {a['min_acceptable_dec']} decimal ({a['min_acceptable_amer']}) — below this: PASS",
+                  f"**Best captured price:** {a['best_dec']} at {a['best_book']}",
+                  f"**Model:** p={a['p_market']}, EV at entry {a['ev_entry']:+.1%}, steam {a['steam_prob']:.0%}, predicted CLV {a['pred_clv_pp']:+.2f}pp",
+                  f"**Paper stake:** {a['stake_fraction']:.2%} of bankroll" if a['tier']=='A' else "**Paper stake:** flat 1u (B-tier, paper only)",
+                  "", "Rules: bet at or above the minimum price at any book; no chasing, no rebets. See movement/PREREG.md.",
+              ])
+              subprocess.run(["gh", "issue", "create", "--title", title, "--body", body],
+                             check=False)
+          PY
 
       - name: Flag scraper failures
         if: env.BFO_FAILED || env.PIN_FAILED

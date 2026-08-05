@@ -1,0 +1,46 @@
+{
+  "policy_id": "MOV-HOLD-2",
+  "status": "prospective_dry_run",
+  "movement_model": "MOV-MKT-2",
+  "derived_from": "MOV-HOLD-1 (independent audit 2026-08-05: prospective-shadow-ready)",
+  "selection_side": "side with larger calibrated market-only EV at the entry quote",
+  "tiers": {
+    "A": {
+      "description": "The audited frozen policy. Paper-staked at Kelly sizing; the only tier eligible for a future real-money decision.",
+      "min_steam": 0.75,
+      "min_pred_clv_pp": 2.0,
+      "min_ev": 0.01
+    },
+    "B": {
+      "description": "Pre-registered expansion cohort (paper only, flat 1u). Also catches audited-policy bets that drift below A gates under live features (93.8 percent decision parity, conservative direction).",
+      "min_steam": 0.60,
+      "min_pred_clv_pp": 1.0,
+      "min_ev": 0.01
+    }
+  },
+  "execution": {
+    "min_executable_ev": 0.02,
+    "rule": "minimum acceptable decimal price = 1.02 / p_market. Bet only at or above it. Below it: pass. No chasing, no rescoring on price moves, no rebets.",
+    "counts_prospective_rules": [
+      "discovery_lag_h <= 168 (line first seen within 7 days of scoring)",
+      "event start >= 24h after scoring time"
+    ]
+  },
+  "sizing": {
+    "kelly_fraction": 0.25,
+    "per_bet_cap": 0.005,
+    "per_event_cap": 0.01,
+    "note": "paper bankroll; B-tier tracked at flat 1u alongside Kelly for cohort comparison"
+  },
+  "cohorts": [
+    "tier x side (favorite/underdog) tracked separately; dogs are IN per user decision 2026-08-05, small-sample caveat pre-registered",
+    "primary metric: realized CLV vs Pinnacle close; secondary: CLV vs retail consensus close; ROI monitored, not gating"
+  ],
+  "rules": [
+    "hold to settlement; no exits, hedges, or rebets",
+    "one signal per pair per event, scored at first sighting with known start time",
+    "model features use the frozen open; EV gate and min price use the entry quote",
+    "draw/NC returns stake",
+    "no retuning of model, gates, or sizing during the run; scheduled refit restarts nothing if gates unchanged (see PREREG)"
+  ]
+}
