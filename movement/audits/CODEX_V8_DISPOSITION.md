@@ -24,3 +24,16 @@ F15 real-bet discipline -> protocol_eligible/exception_reason added
 F16 concurrency/gaps -> brief decoupled; heartbeats remain open pre-GREEN
 F17 05a/05b timing -> PASS (verified)
 F18 band-correction rejection -> PASS (upheld, incl. their OOF variant)
+
+## Focused recheck round 2 — CLEARED (2026-08-05)
+
+Codex verified all six focused tests at d8a4442: hashes exact, push-failure
+paths exit nonzero, ROI cohort boundary enforced end-to-end (pre-remediation
+winner descriptive-only), fresh rows carry cohort fields, policy/dashboard
+identity correct, issue dedup fail-closed, GREEN aggregator NOT_GREEN with
+empty funnel as expected. Independent-recheck prerequisite SATISFIED.
+Model-directed real-bet pause LIFTED. Still gated: GREEN (n>=60 eligible),
+transport test (Pinnacle-only vs retail pooling), real sizing above token
+(GREEN + fill-aware sim + second GREEN). Non-blocking note 1 (explicit
+booleans on quarantined rows) fixed same day; note 2 (ops attestation
+hard-coded false in green_report) is intentional fail-safe design.

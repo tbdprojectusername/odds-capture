@@ -269,6 +269,9 @@ def main():
             new_signals.append({"signal_key": skey, "scored_at": str(now),
                                 "event_start": str(start), "f1": f1_key, "f2": f2_key,
                                 "tier": "excluded_womens", "counts_prospective": False,
+                                "clears_min_at_scoring": False, "paper_filled": False,
+                                "pre_remediation": bool(now < remediation_ts),
+                                "roi_cohort_eligible": False,
                                 "model_id": spec["model_id"], "policy_id": pol["policy_id"]})
             scored_keys.add(skey)
             continue
@@ -279,6 +282,9 @@ def main():
             new_signals.append({"signal_key": skey, "scored_at": str(now),
                                 "event_start": str(start), "f1": f1_key, "f2": f2_key,
                                 "tier": "excluded_unverified_domain", "counts_prospective": False,
+                                "clears_min_at_scoring": False, "paper_filled": False,
+                                "pre_remediation": bool(now < remediation_ts),
+                                "roi_cohort_eligible": False,
                                 "model_id": spec["model_id"], "policy_id": pol["policy_id"]})
             scored_keys.add(skey)
             continue
