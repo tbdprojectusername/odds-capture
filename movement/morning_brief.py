@@ -138,7 +138,7 @@ def main():
             L += ["## Prospective performance (counted signals)", ""]
             for (tier, side), gg in g.groupby(["tier", "selected_side"]):
                 clv = gg.clv_pp_vs_pinnacle_close.mean()
-                settled = gg[gg.status.eq("settled")]
+                settled = gg[gg.status.eq("settled") & gg.unit_return.notna()]
                 roi = settled.unit_return.mean() if len(settled) else np.nan
                 L.append(f"- Tier {tier} / {side}: n={len(gg)}, CLV vs Pinnacle close {clv:+.2f}pp, "
                          f"settled {len(settled)}" + ("" if pd.isna(roi) else f", flat ROI {roi:+.1%}"))

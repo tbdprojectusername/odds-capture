@@ -1,6 +1,6 @@
 # MOV-HOLD-2.1 dashboard
 
-Updated 2026-08-05 19:01 UTC · policy `MOV-HOLD-2.1` · paper bankroll $10,000 · signals 12 (A 4 / B 8) · graded 1
+Updated 2026-08-05 21:02 UTC · policy `MOV-HOLD-2.1` · paper bankroll $10,000 · signals 12 (A 4 / B 8) · graded 1
 
 ## Real bets
 

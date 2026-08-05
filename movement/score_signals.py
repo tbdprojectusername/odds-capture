@@ -189,6 +189,12 @@ def main():
     log = pd.read_csv(md / "reference/fights_log.csv", parse_dates=["event_date"])
     log["event_date"] = pd.to_datetime(log.event_date).dt.tz_localize("UTC")
     women = set(pd.read_csv(md / "reference/women_keys.csv").name_key)
+    # V8 F7/F12: append-only reviewed bout classification (signal_key, domain).
+    # Unmatched fighters fail CLOSED until a human classifies the bout as men's.
+    domp = md / "reference/bout_domain.csv"
+    domains = (pd.read_csv(domp).set_index("signal_key").domain.to_dict()
+               if domp.exists() else {})
+    static_keys = set(static.name_key)
 
     bfo, pin = load_capture(args.data_dir)
     z = bfo_pairs(bfo)
@@ -261,6 +267,16 @@ def main():
             new_signals.append({"signal_key": skey, "scored_at": str(now),
                                 "event_start": str(start), "f1": f1_key, "f2": f2_key,
                                 "tier": "excluded_womens", "counts_prospective": False,
+                                "model_id": spec["model_id"], "policy_id": pol["policy_id"]})
+            scored_keys.add(skey)
+            continue
+        # V8 F7: identity history cannot establish domain for unmatched fighters —
+        # a debutante absent from women_keys would otherwise score as a male debut.
+        # Fail closed until the bout is explicitly classified men's.
+        if (f1_key not in static_keys or f2_key not in static_keys) and domains.get(skey) != "mens":
+            new_signals.append({"signal_key": skey, "scored_at": str(now),
+                                "event_start": str(start), "f1": f1_key, "f2": f2_key,
+                                "tier": "excluded_unverified_domain", "counts_prospective": False,
                                 "model_id": spec["model_id"], "policy_id": pol["policy_id"]})
             scored_keys.add(skey)
             continue
@@ -338,16 +354,30 @@ def main():
             tier = "A"
         elif sel["ev"] >= gb["min_ev"] and sel["steam"] >= gb["min_steam"] and sel["pred_clv_pp"] >= gb["min_pred_clv_pp"]:
             tier = "B"
+        # V8 F10: also tag the tier under OPEN-quote EV (the audited gate basis),
+        # holding model outputs and side selection fixed.
+        o_dec1, o_dec2 = float(srow.open_dec1), float(srow.open_dec2)
+        Of_o, Od_o = (o_dec1, o_dec2) if fav_is_f1 else (o_dec2, o_dec1)
+        ev_open = (p_mkt_fav * Of_o - 1) if sel_fav else ((1 - p_mkt_fav) * Od_o - 1)
+        open_tier = ""
+        if ev_open >= ga["min_ev"] and sel["steam"] >= ga["min_steam"] and sel["pred_clv_pp"] >= ga["min_pred_clv_pp"]:
+            open_tier = "A"
+        elif ev_open >= gb["min_ev"] and sel["steam"] >= gb["min_steam"] and sel["pred_clv_pp"] >= gb["min_pred_clv_pp"]:
+            open_tier = "B"
         min_price = (1 + exec_floor) / sel["p"]
         lag_h = (now - pd.to_datetime(srow.first_seen, utc=True)).total_seconds() / 3600
         hours_to_start = (start - now).total_seconds() / 3600
         counts = bool(tier) and lag_h <= 168 and hours_to_start >= 24
-        actionable = bool(tier == "A" and sel["best"] >= min_price and counts)
-        # Kelly at the price you would actually take (best when it clears, else min).
-        kprice = float(sel["best"]) if sel["best"] >= min_price else min_price
-        kelly = max((sel["p"] * kprice - 1) / (kprice - 1), 0.0)
+        clears_min = bool(sel["best"] >= min_price)
+        actionable = bool(tier == "A" and clears_min and counts)
+        # V8 F1: a threshold is not a fill. Paper execution exists only when the
+        # captured best price clears the floor; size and grade only real fills.
+        paper_filled = bool(tier in ("A", "B") and counts and clears_min)
+        paper_fill_dec = float(sel["best"]) if paper_filled else np.nan
+        kelly = (max((sel["p"] * paper_fill_dec - 1) / (paper_fill_dec - 1), 0.0)
+                 if paper_filled else 0.0)
         stake = min(pol["sizing"]["kelly_fraction"] * kelly, pol["sizing"]["per_bet_cap"])
-        if not counts or tier != "A":
+        if not counts or tier != "A" or not paper_filled:
             stake = 0.0   # A-tier Kelly stakes only; B-tier gets its flat unit below
         # entry no-vig q of selected side for CLV grading
         q1_entry = float(entry["q1"]) if "q1" in entry else q1_open
@@ -368,7 +398,13 @@ def main():
             "min_acceptable_dec": round(min_price, 4),
             "min_acceptable_amer": dec_to_amer(min_price),
             "actionable_now": actionable,
+            "clears_min_at_scoring": clears_min,
+            "paper_filled": paper_filled,
+            "paper_fill_dec": round(paper_fill_dec, 4) if np.isfinite(paper_fill_dec) else np.nan,
+            "paper_fill_book": sel["best_bk"] if paper_filled else "",
+            "paper_fill_time": str(now) if paper_filled else "",
             "p_market": round(sel["p"], 5), "ev_entry": round(sel["ev"], 5),
+            "ev_open": round(float(ev_open), 5), "open_gate_tier": open_tier if open_tier else "none",
             "steam_prob": round(sel["steam"], 5), "pred_clv_pp": round(sel["pred_clv_pp"], 3),
             # projected close of the SELECTED side: fair (no-vig) and an
             # approximate board price re-applying the opening hold. Display only —
@@ -401,13 +437,14 @@ def main():
             if len(old):
                 unstarted = pd.to_datetime(old.event_start, utc=True, format="mixed") > now
                 prior_open = float(old.loc[unstarted, "stake_fraction"].fillna(0).sum())
-        amask = ns.tier.eq("A") & ns.counts_prospective
+        amask = ns.tier.eq("A") & ns.counts_prospective & ns.paper_filled.fillna(False)
+        bmask = ns.tier.eq("B") & ns.counts_prospective & ns.paper_filled.fillna(False)
         want = ns.loc[amask, "stake_fraction"].astype(float)
         budget = max(ceiling - prior_open, 0.0)
         if want.sum() > budget and want.sum() > 0:
             ns.loc[amask, "stake_fraction"] = (want * budget / want.sum()).round(6)
         ns["stake_usd"] = np.where(amask, (ns.stake_fraction.astype(float) * bank).round(2),
-                          np.where(ns.tier.eq("B") & ns.counts_prospective, round(b_unit * bank, 2), 0.0))
+                          np.where(bmask, round(b_unit * bank, 2), 0.0))
         new_signals = ns.to_dict("records")
 
     (md / "ledger").mkdir(exist_ok=True)

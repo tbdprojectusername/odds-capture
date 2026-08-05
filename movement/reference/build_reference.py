@@ -72,7 +72,11 @@ b = td[["event_date", "fighter2_name", "reach_opp"] + list(bmap)].rename(
 allrows = pd.concat([a, b], ignore_index=True)
 allrows["name_key"] = allrows.name.map(nrm)
 allrows = allrows.sort_values("event_date")
-static = allrows.groupby("name_key").last().reset_index().rename(columns={"event_date": "as_of_fight_date"})
+# V8 F11: groupby.last() takes the last NON-NULL value per column independently,
+# silently resurrecting stale stats. tail(1) keeps the literal latest row —
+# missing values stay missing and go through the spec's median imputation.
+static = (allrows.groupby("name_key", group_keys=False).tail(1)
+          .rename(columns={"event_date": "as_of_fight_date"}).reset_index(drop=True))
 static["division_last"] = static.name_key.map(last_div)
 dob = log.dropna(subset=["dob"]).sort_values("event_date").groupby("name_key").dob.last()
 static["dob"] = static.name_key.map(dob)
@@ -81,12 +85,15 @@ print(f"fighters_static: {len(static)} fighters | stat completeness: "
       f"{static[STAT_BASES[0]].notna().mean():.1%}")
 
 # ---------- STALENESS PARITY TEST on 2026 fights ----------
-# For each 2026 fight, rebuild fighter features using only information available
-# the day before (previous appearance's stats), keep odds features identical, score
-# with the MOV-MKT-1 spec, and compare gate decisions to the shipped ledger.
+# V8 F2: the LIVE side of this parity test scores with the DEPLOYED spec
+# (MOV-MKT-2). The shipped MOV-HOLD-1 ledger (built on MOV-MKT-1 nested
+# predictions) is the fixed historical comparator. This is a pipeline-fidelity
+# test of the deployed feature construction, not an OOS performance test —
+# MOV-MKT-2's training window includes 2026 H1.
 import json
 from scipy.special import expit, logit
-SPEC = json.load(open("C:/Users/cmtub/Documents/Codex/2026-08-05/you/outputs/mma_movement_hold_v1/mov_mkt_1_model_spec.json"))
+SPEC = json.load(open(Path(__file__).parents[1] / "specs/mov_mkt_2_model_spec.json"))
+SPEC_COMPARATOR_NOTE = "shipped ledger side = MOV-MKT-1 nested artifact (mov_hold_2026_all_fights.csv)"
 
 def head_score(head, feat_row, division):
     co = dict(zip(head["transformed_features"], head["coefficients"]))
@@ -99,7 +106,16 @@ def head_score(head, feat_row, division):
     z += co.get(f"cat__division_{division}", 0.0)
     return z
 
-frame = pd.read_pickle(Path(__file__).parent / "frame_rebuilt.pkl")
+_pkl = Path(__file__).parent / "frame_rebuilt.pkl"
+if _pkl.exists():
+    frame = pd.read_pickle(_pkl)
+else:
+    import importlib.util
+    _b = Path("C:/Users/cmtub/Documents/Codex/2026-08-05/you/outputs/mma_odds_movement_v1/run_analysis.py")
+    _s = importlib.util.spec_from_file_location("mov1_base", _b)
+    _m = importlib.util.module_from_spec(_s); _s.loader.exec_module(_m)
+    frame, _, _ = _m.load_frame(REPO)
+    frame.to_pickle(_pkl)
 f26 = frame[frame.year == 2026].copy()
 led26 = pd.read_csv("C:/Users/cmtub/Documents/Codex/2026-08-05/you/outputs/mma_movement_hold_v1/mov_hold_2026_all_fights.csv")
 
@@ -189,4 +205,4 @@ disag = live[live.qual_live != live.qual_ship]
 if len(disag):
     print("\ndisagreements:")
     print(disag[["fight_id","f1_name","f2_name","ev_live","selected_ev","steam_sel_live","selected_steam_prob","clv_live","pred_clv_pp"]].to_string(index=False, float_format=lambda x: f"{x:.4f}"))
-live.to_csv(Path(__file__).parent / "parity_2026.csv", index=False)
+live.to_csv(Path(__file__).parent.parent / "parity" / "parity_2026_movmkt2.csv", index=False)

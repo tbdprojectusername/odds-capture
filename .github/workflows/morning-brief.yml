@@ -8,8 +8,10 @@ on:
     - cron: "0 13 * * *"
   workflow_dispatch: {}
 
+# V8 F16: own concurrency group so the brief never queues behind a ~50-min poll
+# run; git rebase-retry handles commit interleaving with the poller.
 concurrency:
-  group: poll-odds
+  group: movement-brief
   cancel-in-progress: false
 
 permissions:
@@ -39,11 +41,13 @@ jobs:
           git add movement/ledger movement/reference movement/state movement/DASHBOARD.md
           if ! git diff --cached --quiet; then
             git commit -m "movement: morning brief $(date -u +%Y-%m-%d)"
+            OK=0
             for a in 1 2 3; do
               git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && \
-              git push origin "HEAD:${GITHUB_REF_NAME}" && break
+              git push origin "HEAD:${GITHUB_REF_NAME}" && OK=1 && break
               echo "push attempt $a failed, retrying"; sleep 5
             done
+            [ "$OK" -eq 1 ] || { echo "::error::morning brief failed to push"; exit 1; }
           fi
 
       - name: Open brief issue when there is news

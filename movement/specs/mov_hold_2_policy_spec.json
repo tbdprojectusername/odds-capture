@@ -1,5 +1,5 @@
 {
-  "policy_id": "MOV-HOLD-2.1",
+  "policy_id": "MOV-HOLD-2.2",
   "status": "prospective_dry_run",
   "amendment_note": "2026-08-05b: bespoke staking re-registered before any graded outcome (zero settlements at time of change); gates, tiers, counting rules unchanged; cohort continues",
   "movement_model": "MOV-MKT-2",
@@ -14,7 +14,7 @@
     },
     "B": {
       "description": "Pre-registered expansion cohort (paper only, flat 1u). Also catches audited-policy bets that drift below A gates under live features (93.8 percent decision parity, conservative direction).",
-      "min_steam": 0.60,
+      "min_steam": 0.6,
       "min_pred_clv_pp": 1.0,
       "min_ev": 0.01
     }
@@ -49,5 +49,11 @@
     "model features use the frozen open; EV gate and min price use the entry quote",
     "draw/NC returns stake",
     "no retuning of model, gates, or sizing during the run; scheduled refit restarts nothing if gates unchanged (see PREREG)"
-  ]
+  ],
+  "remediation": {
+    "addendum": "PREREG_REMEDIATION_2026-08-05c.md",
+    "remediation_ts": "2026-08-05T20:30:00Z",
+    "trigger": "Codex V8 deployment audit (movement/audits/)",
+    "roi_cohort_rule": "paper ROI/staking evidence counts only for paper_filled signals scored at/after remediation_ts; earlier rows remain descriptive (CLV only)"
+  }
 }

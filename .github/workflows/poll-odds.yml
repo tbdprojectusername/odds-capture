@@ -64,19 +64,21 @@ jobs:
           done
           [ -z "$PUSH_FAIL" ] || { echo "::error::a poll commit failed to push"; exit 1; }
 
-      # MOV-HOLD-2 scorer: runs on the data just committed. Fail-soft — a scorer
-      # problem must never take down the capture job (data > signals).
+      # MOV-HOLD-2 scorer: runs AFTER capture is committed, so a scorer failure
+      # can fail the job loudly (V8 F8) without endangering captured data.
       - name: Score movement signals
         run: |
           python movement/score_signals.py || { echo "SCORE_FAILED=1" >> "$GITHUB_ENV"; exit 0; }
           git add movement/state movement/ledger
           if ! git diff --cached --quiet; then
             git commit -m "movement: signals $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            OK=0
             for a in 1 2 3; do
               git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && \
-              git push origin "HEAD:${GITHUB_REF_NAME}" && break
+              git push origin "HEAD:${GITHUB_REF_NAME}" && OK=1 && break
               echo "push attempt $a failed, retrying"; sleep 5
             done
+            [ "$OK" -eq 1 ] || { echo "::error::movement signal commit failed to push"; exit 1; }
           fi
 
       - name: Open issues for new signals
@@ -88,9 +90,18 @@ jobs:
           import json, subprocess, pathlib
           p = pathlib.Path("movement/state/new_alerts.json")
           alerts = json.loads(p.read_text()) if p.exists() else []
+          existing = set()
+          try:
+              found = subprocess.run(["gh", "issue", "list", "--state", "all", "--limit", "200",
+                                      "--json", "title"], check=True, capture_output=True, text=True)
+              existing = {x["title"] for x in json.loads(found.stdout)}
+          except Exception as e:
+              print("issue-list failed, proceeding without dedup:", e)
           for a in alerts:
               act = "ACTIONABLE NOW" if a["actionable_now"] else "WATCH (price below minimum)"
               title = f"[{a['tier']}] {a['selected_fighter']} ({a['selected_side']}) at {a['min_acceptable_amer']} or better — {act}"
+              if title in existing:
+                  print("skip duplicate issue:", title); continue
               body = "\n".join([
                   f"**Event start:** {a['event_start']}",
                   f"**Bet:** {a['selected_fighter']} ({a['selected_side']}, tier {a['tier']})",
@@ -106,6 +117,14 @@ jobs:
               subprocess.run(["gh", "issue", "create", "--title", title, "--body", body],
                              check=False)
           PY
+
+      # V8 F8: capture is safe on disk and pushed — now surface scorer failure
+      # durably instead of swallowing it.
+      - name: Fail on scorer failure
+        if: env.SCORE_FAILED == '1'
+        run: |
+          echo "::error::movement scorer failed; capture succeeded but signals may be missing"
+          exit 1
 
       - name: Flag scraper failures
         if: env.BFO_FAILED || env.PIN_FAILED

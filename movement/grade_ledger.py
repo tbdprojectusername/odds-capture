@@ -84,13 +84,18 @@ def main():
         clv_pin = 100 * (q_sel_close_pin - r.entry_q_sel) if np.isfinite(q_sel_close_pin) else np.nan
 
         winner = rmap.get(r.signal_key)
+        # V8 F1: ROI exists only for real paper fills. Signal CLV is always graded;
+        # a synthetic fill at the minimum price is never invented.
+        filled = bool(r.get("paper_filled", False))
         if winner is None or (isinstance(winner, float) and np.isnan(winner)):
             status, unit = "pending_settlement", np.nan
         elif str(winner) in ("draw", "nc"):
-            status, unit = "void", 0.0
+            status, unit = ("void", 0.0) if filled else ("void_unfilled", np.nan)
+        elif not filled:
+            status, unit = "settled_unfilled", np.nan
         else:
             won = str(winner) == str(r.selected_fighter)
-            price = float(r.best_dec) if bool(r.actionable_now) else float(r.min_acceptable_dec)
+            price = float(r.paper_fill_dec)
             unit = (price - 1) if won else -1.0
             status = "settled"
         new_rows.append({
@@ -99,6 +104,14 @@ def main():
             "event_start": str(r.event_start),
             "clv_pp_vs_pinnacle_close": round(clv_pin, 3) if np.isfinite(clv_pin) else np.nan,
             "clv_pp_vs_consensus_close": round(clv_cons, 3) if np.isfinite(clv_cons) else np.nan,
+            # V8 F13: a close is only as good as its age; record snapshot staleness.
+            "close_pinnacle_t": str(close_pin["t"]) if close_pin is not None else "",
+            "close_pinnacle_gap_min": round((r.event_start - close_pin["t"]).total_seconds() / 60, 1)
+                                      if close_pin is not None else np.nan,
+            "close_consensus_t": str(close_cons["t"]) if close_cons is not None else "",
+            "close_consensus_gap_min": round((r.event_start - close_cons["t"]).total_seconds() / 60, 1)
+                                       if close_cons is not None else np.nan,
+            "paper_filled": filled,
             "status": status, "unit_return": unit,
             "stake_fraction": r.stake_fraction,
         })
