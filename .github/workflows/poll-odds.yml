@@ -97,7 +97,9 @@ jobs:
                   f"**Minimum acceptable price:** {a['min_acceptable_amer']} ({a['min_acceptable_dec']} decimal) — anything worse: PASS",
                   f"**Best captured price:** {a['best_amer']} at {a['best_book']} ({a['best_dec']} decimal)",
                   f"**Model:** p={a['p_market']}, EV at entry {a['ev_entry']:+.1%}, steam {a['steam_prob']:.0%}, predicted CLV {a['pred_clv_pp']:+.2f}pp",
-                  f"**Paper stake:** {a['stake_fraction']:.2%} of bankroll" if a['tier']=='A' else "**Paper stake:** flat 1u (B-tier, paper only)",
+                  (f"**Paper stake:** ${a.get('stake_usd', 0):.2f} ({a['stake_fraction']:.2%} of paper bankroll)"
+                   if a['tier'] == 'A' else
+                   f"**Paper stake:** ${a.get('stake_usd', 0):.2f} flat (B-tier, paper only)"),
                   "", "Rules: bet at the minimum price or better at any book; no chasing, no rebets. See movement/PREREG.md.",
               ])
               subprocess.run(["gh", "issue", "create", "--title", title, "--body", body],
