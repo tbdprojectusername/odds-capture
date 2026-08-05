@@ -1,2 +1,2 @@
-signal_key,graded_at,tier,selected_side,counts_prospective,event_start,clv_pp_vs_pinnacle_close,clv_pp_vs_consensus_close,status,unit_return,stake_fraction
-jan blachowicz|navajo stirling|2026-08-01,2026-08-05 19:01:58.362341+00:00,A,favorite,False,2026-08-01 19:15:00+00:00,2.575,-0.348,pending_settlement,,0.0
+signal_key,graded_at,tier,selected_side,counts_prospective,event_start,clv_pp_vs_pinnacle_close,clv_pp_vs_consensus_close,close_pinnacle_t,close_pinnacle_gap_min,close_consensus_t,close_consensus_gap_min,paper_filled,pre_remediation,roi_cohort_eligible,selected_won,status,unit_return,stake_fraction
+jan blachowicz|navajo stirling|2026-08-01,2026-08-05 22:13:14.821319+00:00,A,favorite,False,2026-08-01 19:15:00+00:00,2.575,-0.348,2026-08-01 18:13:34.732513+00:00,61.4,2026-08-01 18:13:26.911418+00:00,61.6,False,True,False,,pending_settlement,,0.0

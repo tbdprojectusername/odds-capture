@@ -42,6 +42,7 @@ jobs:
         run: |
           git config user.name  "odds-capture-bot"
           git config user.email "actions@github.com"
+          PUSH_FAIL=0
           for i in 1 2 3 4 5; do
             echo "=== poll $i of 5 ==="
             python poll_bfo.py --out-dir data || echo "BFO_FAILED=1" >> "$GITHUB_ENV"
@@ -55,14 +56,18 @@ jobs:
                 git push origin "HEAD:${GITHUB_REF_NAME}" && OK=1 && break
                 echo "push attempt $a failed, retrying"; sleep 5
               done
-              # a silently-lost push means lost data — surface it (V3 P1)
-              [ "$OK" -ne 1 ] && echo "PUSH_FAIL=1" >> "$GITHUB_ENV"
+              # V8-recheck R1: $GITHUB_ENV only reaches LATER steps — a same-step
+              # test needs the shell variable itself (silent-loss bug, V3 P1 redux).
+              if [ "$OK" -ne 1 ]; then
+                PUSH_FAIL=1
+                echo "PUSH_FAIL=1" >> "$GITHUB_ENV"
+              fi
             else
               echo "no new rows on poll $i"
             fi
             [ "$i" -lt 5 ] && sleep 600
           done
-          [ -z "$PUSH_FAIL" ] || { echo "::error::a poll commit failed to push"; exit 1; }
+          [ "$PUSH_FAIL" -eq 0 ] || { echo "::error::a poll commit failed to push"; exit 1; }
 
       # MOV-HOLD-2 scorer: runs AFTER capture is committed, so a scorer failure
       # can fail the job loudly (V8 F8) without endangering captured data.
@@ -90,18 +95,25 @@ jobs:
           import json, subprocess, pathlib
           p = pathlib.Path("movement/state/new_alerts.json")
           alerts = json.loads(p.read_text()) if p.exists() else []
-          existing = set()
-          try:
-              found = subprocess.run(["gh", "issue", "list", "--state", "all", "--limit", "200",
-                                      "--json", "title"], check=True, capture_output=True, text=True)
-              existing = {x["title"] for x in json.loads(found.stdout)}
-          except Exception as e:
-              print("issue-list failed, proceeding without dedup:", e)
+          # V8-recheck R6: durable per-signal dedup via the signal_key embedded in
+          # the body; fail CLOSED (skip creation, red step) if the API misbehaves,
+          # never create potential duplicates blind.
+          def already_posted(key):
+              r = subprocess.run(["gh", "issue", "list", "--state", "all",
+                                  "--search", f'"{key}" in:body', "--json", "number"],
+                                 capture_output=True, text=True)
+              if r.returncode != 0:
+                  raise RuntimeError(f"issue list failed: {r.stderr.strip()}")
+              return len(json.loads(r.stdout)) > 0
+          failures = 0
           for a in alerts:
               act = "ACTIONABLE NOW" if a["actionable_now"] else "WATCH (price below minimum)"
               title = f"[{a['tier']}] {a['selected_fighter']} ({a['selected_side']}) at {a['min_acceptable_amer']} or better — {act}"
-              if title in existing:
-                  print("skip duplicate issue:", title); continue
+              try:
+                  if already_posted(a["signal_key"]):
+                      print("skip duplicate issue:", a["signal_key"]); continue
+              except Exception as e:
+                  print("::error::dedup check failed, not creating:", e); failures += 1; continue
               body = "\n".join([
                   f"**Event start:** {a['event_start']}",
                   f"**Bet:** {a['selected_fighter']} ({a['selected_side']}, tier {a['tier']})",
@@ -113,9 +125,14 @@ jobs:
                    if a['tier'] == 'A' else
                    f"**Paper stake:** ${a.get('stake_usd', 0):.2f} flat (B-tier, paper only)"),
                   "", "Rules: bet at the minimum price or better at any book; no chasing, no rebets. See movement/PREREG.md.",
+                  "", f"signal_key: `{a['signal_key']}`",   # durable dedup marker
               ])
-              subprocess.run(["gh", "issue", "create", "--title", title, "--body", body],
-                             check=False)
+              r = subprocess.run(["gh", "issue", "create", "--title", title, "--body", body],
+                                 capture_output=True, text=True)
+              if r.returncode != 0:
+                  print("::error::issue create failed:", r.stderr.strip()); failures += 1
+          if failures:
+              raise SystemExit(1)   # ledger already committed; a red step is the incident
           PY
 
       # V8 F8: capture is safe on disk and pushed — now surface scorer failure

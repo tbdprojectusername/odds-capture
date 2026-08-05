@@ -1,0 +1,57 @@
+{
+ "generated": "2026-08-05 22:15:37.658780+00:00",
+ "policy_id": "MOV-HOLD-2.2",
+ "remediation_ts": "2026-08-05 20:30:00+00:00",
+ "verdict": "NOT_GREEN",
+ "checks": {
+  "funnel": {
+   "graded": 1,
+   "tier_A": 1,
+   "favorites": 1,
+   "counts_prospective": 0,
+   "post_remediation": 0,
+   "paper_filled": 0,
+   "roi_cohort_eligible": 0,
+   "eligible_close_le60m": 0
+  },
+  "criteria": {
+   "n_eligible": {
+    "value": 0,
+    "bar": ">= 60",
+    "pass": false
+   },
+   "event_clusters": {
+    "value": 0,
+    "bar": ">= 30",
+    "pass": false
+   },
+   "clv_mean_pp": {
+    "value": null,
+    "bar": ">= 1.5",
+    "pass": false
+   },
+   "clv_ci_lower": {
+    "value": null,
+    "bar": "> 0",
+    "pass": false
+   },
+   "exec_at_scoring_rate": {
+    "value": null,
+    "bar": ">= 0.6",
+    "pass": false
+   },
+   "close_coverage": {
+    "value": 0.0,
+    "bar": ">= 0.6",
+    "pass": false
+   },
+   "ops_30day_clean": {
+    "value": null,
+    "bar": "manual attestation + incident log",
+    "pass": false
+   }
+  },
+  "open_source_strata": []
+ },
+ "rows_used": []
+}

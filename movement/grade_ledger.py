@@ -87,17 +87,19 @@ def main():
         # V8 F1: ROI exists only for real paper fills. Signal CLV is always graded;
         # a synthetic fill at the minimum price is never invented.
         filled = bool(r.get("paper_filled", False))
+        sel_won = np.nan
         if winner is None or (isinstance(winner, float) and np.isnan(winner)):
             status, unit = "pending_settlement", np.nan
         elif str(winner) in ("draw", "nc"):
             status, unit = ("void", 0.0) if filled else ("void_unfilled", np.nan)
-        elif not filled:
-            status, unit = "settled_unfilled", np.nan
         else:
-            won = str(winner) == str(r.selected_fighter)
-            price = float(r.paper_fill_dec)
-            unit = (price - 1) if won else -1.0
-            status = "settled"
+            sel_won = bool(str(winner) == str(r.selected_fighter))
+            if not filled:
+                status, unit = "settled_unfilled", np.nan
+            else:
+                price = float(r.paper_fill_dec)
+                unit = (price - 1) if sel_won else -1.0
+                status = "settled"
         new_rows.append({
             "signal_key": r.signal_key, "graded_at": str(now), "tier": r.tier,
             "selected_side": r.selected_side, "counts_prospective": r.counts_prospective,
@@ -112,6 +114,10 @@ def main():
             "close_consensus_gap_min": round((r.event_start - close_cons["t"]).total_seconds() / 60, 1)
                                        if close_cons is not None else np.nan,
             "paper_filled": filled,
+            # V8-recheck R2: carry the remediation cohort boundary into grades.
+            "pre_remediation": bool(r.get("pre_remediation", False)),
+            "roi_cohort_eligible": bool(r.get("roi_cohort_eligible", False)),
+            "selected_won": sel_won,   # fight outcome, independent of paper fill
             "status": status, "unit_return": unit,
             "stake_fraction": r.stake_fraction,
         })

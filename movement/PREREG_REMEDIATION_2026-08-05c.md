@@ -98,6 +98,36 @@ success; signal issues are deduplicated; the morning brief has its own
 concurrency group. Remaining follow-ups: heartbeat alarms and expected-pair
 reconciliation (open item before GREEN, per prerequisite 10).
 
+## Recheck fixes (2026-08-05d — appended after the independent recheck)
+
+The recheck (movement/audits/) returned NOT CLEARED with blockers R1/R2. Fixes,
+all in code at this addendum's commit:
+
+- **R1**: the poll push-failure test now uses a same-step shell variable
+  (`$GITHUB_ENV` only reaches later steps); three failed pushes exit nonzero.
+- **R2**: the ROI boundary is enforced in data end-to-end: the scorer writes
+  `pre_remediation` and `roi_cohort_eligible` on every row from the policy's
+  `remediation_ts`; the grader propagates both plus `selected_won`; the
+  dashboard computes ROI only from `roi_cohort_eligible` rows and labels
+  pre-remediation CLV as descriptive.
+- **R3**: the active policy JSON no longer carries the 93.8% claim or the
+  synthetic-fill Kelly basis.
+- **R4**: dashboards read the policy id from the spec.
+- **R5**: real-bet display separates protocol-eligible P&L from all
+  discretionary cash P&L; the combined figure is never labelled system
+  performance.
+- **R6**: signal issues dedup on the embedded `signal_key` (fail-closed if the
+  API errs); the brief dedups on exact title; creation failures fail the step.
+- **R7**: `green_report.py` is the frozen, read-only GREEN aggregator; it
+  enforces the funnel (tier A, favorite, counted, post-remediation, filled,
+  close gap ≤60m), n/cluster/CI/coverage bars, reports open-source strata, and
+  emits the exact row keys. Ops-30-day-clean remains a manual attestation item.
+- **R8 transport test, restated bindingly:** selected-side orientation; over
+  ≥30 pairs with both a Pinnacle-only open and a later ≥3-book retail quote:
+  |mean signed gap| < 0.5pp AND mean |gap| < 1.0pp AND p90 |gap| < 2.0pp, with
+  a bootstrap CI on the signed mean excluding ±0.5pp. Until it passes,
+  Pinnacle-only and retail-composite opens are never pooled in GREEN.
+
 ## Independent recheck (V8 prerequisite 16)
 
 Before any GREEN is trusted, an independent reviewer re-runs: chain hashes,

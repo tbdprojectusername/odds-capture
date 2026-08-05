@@ -48,6 +48,8 @@ def main():
     md = args.movement_dir
     now = pd.Timestamp(datetime.now(timezone.utc))
 
+    pol = json.loads((md / "specs/mov_hold_2_policy_spec.json").read_text(encoding="utf-8"))
+    policy_id = pol.get("policy_id", "MOV-HOLD-?")
     led = pd.read_csv(md / "ledger/signals.csv")
     led["event_start"] = pd.to_datetime(led.event_start, utc=True, format="mixed")
     led["scored_at"] = pd.to_datetime(led.scored_at, utc=True, format="mixed")
@@ -87,15 +89,15 @@ def main():
     gmap = graded.set_index("signal_key").to_dict("index") if len(graded) else {}
 
     # ---------------- dashboard ----------------
-    L = [f"# MOV-HOLD-2.1 dashboard", "",
-         f"Updated {now:%Y-%m-%d %H:%M} UTC · policy `MOV-HOLD-2.1` · paper bankroll $10,000 · "
+    L = [f"# {policy_id} dashboard", "",
+         f"Updated {now:%Y-%m-%d %H:%M} UTC · policy `{policy_id}` · paper bankroll $10,000 · "
          f"signals {len(led[led.tier.isin(['A','B'])])} (A {len(led[led.tier.eq('A')])} / B {len(led[led.tier.eq('B')])}) · "
          f"graded {len(graded)}", ""]
 
     if len(real):
         L += ["## Real bets", "", "| Fighter | Tier | Fill | Stake | To win | Line now | Proj. close | Status |",
               "|---|---|---|---|---|---|---|---|"]
-        pnl_settled = 0.0; any_settled = False
+        pnl_all = 0.0; pnl_proto = 0.0; any_settled = False
         for _, rb in real.iterrows():
             sig = led[led.signal_key.eq(rb.signal_key)]
             proj = sig.est_board_close_amer.iloc[0] if len(sig) else ""
@@ -103,18 +105,27 @@ def main():
             status = rb.status
             live_row = open_led[open_led.signal_key.eq(rb.signal_key)]
             now_a = live_row.now_amer.iloc[0] if len(live_row) else ""
-            if g.get("status") == "settled":
-                won = g.get("unit_return", 0) > 0
+            # real settlement follows the fight result (selected_won), independent
+            # of paper-fill status
+            if g.get("status") in ("settled", "settled_unfilled") and pd.notna(g.get("selected_won", np.nan)):
+                won = bool(g["selected_won"])
                 pnl = rb.to_win if won else -rb.stake
-                pnl_settled += pnl; any_settled = True
+                pnl_all += pnl; any_settled = True
+                if bool(rb.get("protocol_eligible", False)):
+                    pnl_proto += pnl
                 status = f"{'WON' if won else 'LOST'} {fmt_money(pnl, rb.currency)}"
-            elif g.get("status") == "void":
+            elif g.get("status") in ("void", "void_unfilled"):
                 status = "VOID"
-            flag = "" if rb.price_source == "user_confirmed" else " *"
+            flag = "" if bool(rb.get("protocol_eligible", False)) else " †"
             L.append(f"| {rb.fighter}{flag} | {rb.tier} | {int(rb.price_amer)} | {fmt_money(rb.stake, rb.currency)} | "
                      f"{fmt_money(rb.to_win, rb.currency)} | {now_a} | {proj} | {status} |")
         if any_settled:
-            L.append(f"\n**Settled real P&L: {fmt_money(pnl_settled)}**")
+            # V8-recheck R5: never label combined discretionary cash as system performance.
+            L.append(f"\n**Protocol-eligible real P&L: {fmt_money(pnl_proto)}** · "
+                     f"all discretionary cash P&L (incl. exceptions): {fmt_money(pnl_all)}")
+        if (~real.get("protocol_eligible", pd.Series(dtype=bool)).astype(bool)).any():
+            L.append("\n† exception or unconfirmed fill — excluded from protocol P&L "
+                     "(see ledger/real_bets.csv exception_reason).")
         if (real.price_source != "user_confirmed").any():
             L.append("\n\\* fill price assumed from capture — correct in `ledger/real_bets.csv` if different.")
         L.append("")
@@ -135,14 +146,22 @@ def main():
     if len(graded):
         g = graded[graded.get("counts_prospective", pd.Series(dtype=bool)).astype(bool)] if "counts_prospective" in graded else graded
         if len(g):
+            # V8-recheck R2: ROI only from the remediation-eligible cohort; CLV for
+            # pre-remediation rows is descriptive and labelled as such.
             L += ["## Prospective performance (counted signals)", ""]
+            elig_col = g.get("roi_cohort_eligible", pd.Series(False, index=g.index)).fillna(False).astype(bool)
+            pre_col = g.get("pre_remediation", pd.Series(False, index=g.index)).fillna(False).astype(bool)
             for (tier, side), gg in g.groupby(["tier", "selected_side"]):
                 clv = gg.clv_pp_vs_pinnacle_close.mean()
-                settled = gg[gg.status.eq("settled") & gg.unit_return.notna()]
+                el = gg[elig_col.reindex(gg.index).fillna(False)]
+                settled = el[el.status.eq("settled") & el.unit_return.notna()]
                 roi = settled.unit_return.mean() if len(settled) else np.nan
-                L.append(f"- Tier {tier} / {side}: n={len(gg)}, CLV vs Pinnacle close {clv:+.2f}pp, "
-                         f"settled {len(settled)}" + ("" if pd.isna(roi) else f", flat ROI {roi:+.1%}"))
-            L.append("")
+                pre_n = int(pre_col.reindex(gg.index).fillna(False).sum())
+                L.append(f"- Tier {tier} / {side}: n={len(gg)} (pre-remediation {pre_n}), "
+                         f"CLV vs Pinnacle close {clv:+.2f}pp, ROI-eligible settled {len(settled)}"
+                         + ("" if pd.isna(roi) else f", flat ROI {roi:+.1%}"))
+            L.append("\nROI counts only `roi_cohort_eligible` fills (scored ≥ remediation_ts); "
+                     "pre-remediation rows contribute CLV description only.\n")
 
     upcoming = open_led.groupby(open_led.event_start.dt.date).agg(
         signals=("signal_key", "size"), staked=("stake_usd", "sum")).reset_index()

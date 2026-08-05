@@ -60,8 +60,18 @@ jobs:
           if not p.exists():
               print("quiet morning — no issue"); raise SystemExit
           b = json.loads(p.read_text())
+          title = f"Morning brief {b['date']}"
+          # V8-recheck R6: dedup by exact title; surface API failures as a red step.
+          r = subprocess.run(["gh", "issue", "list", "--state", "all",
+                              "--search", f'"{title}" in:title', "--json", "title"],
+                             capture_output=True, text=True)
+          if r.returncode != 0:
+              print("::error::issue list failed:", r.stderr.strip()); raise SystemExit(1)
+          if title in {x["title"] for x in json.loads(r.stdout)}:
+              print("brief already posted for", b["date"]); raise SystemExit
           body = "\n\n".join(b["sections"]) + "\n\nFull board: movement/DASHBOARD.md"
-          subprocess.run(["gh", "issue", "create",
-                          "--title", f"Morning brief {b['date']}",
-                          "--body", body], check=False)
+          r = subprocess.run(["gh", "issue", "create", "--title", title, "--body", body],
+                             capture_output=True, text=True)
+          if r.returncode != 0:
+              print("::error::issue create failed:", r.stderr.strip()); raise SystemExit(1)
           PY

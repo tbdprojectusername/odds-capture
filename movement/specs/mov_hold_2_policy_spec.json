@@ -13,7 +13,7 @@
       "min_ev": 0.01
     },
     "B": {
-      "description": "Pre-registered expansion cohort (paper only, flat 1u). Also catches audited-policy bets that drift below A gates under live features (93.8 percent decision parity, conservative direction).",
+      "description": "Pre-registered expansion cohort (paper only, flat $50 units). Catches most deployed-pipeline drift from the audited policy: MOV-MKT-2 parity vs the shipped MOV-HOLD-1 artifact is 91.6% (7/8 shipped-only-A rows meet exact B gates). B never enters the promotion cohort retrospectively.",
       "min_steam": 0.6,
       "min_pred_clv_pp": 1.0,
       "min_ev": 0.01
@@ -34,7 +34,7 @@
     "open_exposure_ceiling": 0.25,
     "paper_bankroll_usd": 10000,
     "b_tier_unit_fraction": 0.005,
-    "kelly_price_basis": "best executable price when actionable, else minimum acceptable price",
+    "kelly_price_basis": "captured executable fill price only (paper_filled rows); a signal whose best captured price is below the minimum acceptable price has NO fill, NO stake, NO ROI",
     "event_allocation": "NO event cap (fight outcomes on a card are ~independent). Circuit breaker only: total A-tier stake open at once <= open_exposure_ceiling; a batch that would exceed it scales proportionally; placed stakes never resize",
     "non_counting_signals_stake": 0,
     "note": "amendment 2026-08-05b: bespoke staking derived from this strategy's own qualifier stream (favorite-heavy, ~87% win rate) via variant simulation (see STAKING.md); replaces proof-stage caps inherited from the backtest registry"

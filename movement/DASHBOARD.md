@@ -1,6 +1,6 @@
-# MOV-HOLD-2.1 dashboard
+# MOV-HOLD-2.2 dashboard
 
-Updated 2026-08-05 21:03 UTC · policy `MOV-HOLD-2.1` · paper bankroll $10,000 · signals 12 (A 4 / B 8) · graded 1
+Updated 2026-08-05 22:13 UTC · policy `MOV-HOLD-2.2` · paper bankroll $10,000 · signals 12 (A 4 / B 8) · graded 1
 
 ## Real bets
 
@@ -8,8 +8,10 @@ Updated 2026-08-05 21:03 UTC · policy `MOV-HOLD-2.1` · paper bankroll $10,000 
 |---|---|---|---|---|---|---|---|
 | jose ochoa | A | -327 | CAD 50.00 | CAD 15.29 | -327 | -368 | open |
 | myktybek orolbai | A | -500 | CAD 300.00 | CAD 60.00 | -500 | -602 | open |
-| donte johnson * | A | -230 | CAD 50.00 | CAD 21.74 | -230 | -329 | open |
-| ramiz brahimaj * | B | -103 | CAD 50.00 | CAD 48.54 | -103 | -127 | open |
+| donte johnson † | A | -230 | CAD 50.00 | CAD 21.74 | -230 | -329 | open |
+| ramiz brahimaj † | B | -103 | CAD 50.00 | CAD 48.54 | -103 | -127 | open |
+
+† exception or unconfirmed fill — excluded from protocol P&L (see ledger/real_bets.csv exception_reason).
 
 \* fill price assumed from capture — correct in `ledger/real_bets.csv` if different.
 

@@ -184,6 +184,8 @@ def main():
     pol = json.loads((md / "specs/mov_hold_2_policy_spec.json").read_text(encoding="utf-8"))
     ga, gb = pol["tiers"]["A"], pol["tiers"]["B"]
     exec_floor = pol["execution"]["min_executable_ev"]
+    # V8-recheck R2: the ROI-evidence boundary is enforced in data, not prose.
+    remediation_ts = pd.Timestamp(pol.get("remediation", {}).get("remediation_ts", "1970-01-01T00:00:00Z"))
 
     static = pd.read_csv(md / "reference/fighters_static.csv")
     log = pd.read_csv(md / "reference/fights_log.csv", parse_dates=["event_date"])
@@ -400,6 +402,8 @@ def main():
             "actionable_now": actionable,
             "clears_min_at_scoring": clears_min,
             "paper_filled": paper_filled,
+            "pre_remediation": bool(now < remediation_ts),
+            "roi_cohort_eligible": bool(paper_filled and now >= remediation_ts),
             "paper_fill_dec": round(paper_fill_dec, 4) if np.isfinite(paper_fill_dec) else np.nan,
             "paper_fill_book": sel["best_bk"] if paper_filled else "",
             "paper_fill_time": str(now) if paper_filled else "",
