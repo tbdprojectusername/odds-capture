@@ -130,18 +130,24 @@ def main():
             L.append("\n\\* fill price assumed from capture — correct in `ledger/real_bets.csv` if different.")
         L.append("")
 
-    for tier, label in [("A", "Open paper positions — Tier A (Kelly-staked)"),
-                        ("B", "Open paper positions — Tier B ($50 units, evidence cohort)")]:
+    real_unit = float(pol.get("real_bets_stage0", {}).get("real_unit_usd", 0))
+    for tier, label in [("A", "Open positions — Tier A"),
+                        ("B", "Open positions — Tier B (evidence cohort, paper only)")]:
         t = open_led[open_led.tier.eq(tier)].sort_values("event_start")
         if not len(t):
             continue
-        L += [f"## {label}", "", "| Bet | Side | Event | Entry | Now | Min | Proj. close | Pred CLV | Stake | Clears min |",
-              "|---|---|---|---|---|---|---|---|---|---|"]
+        L += [f"## {label}", "",
+              "| Bet | Side | Event | Entry | Now | Min | Proj. close | Pred CLV | **Real (Stage 0)** | Paper Kelly | Clears min |",
+              "|---|---|---|---|---|---|---|---|---|---|---|"]
         for _, r in t.iterrows():
+            real = f"**${real_unit:,.0f}**" if (tier == "A" and real_unit > 0) else "$0 (paper)"
             L.append(f"| {r.selected_fighter} | {r.selected_side} | {r.event_start:%b %d} | {r.best_amer} | "
                      f"{r.now_amer} ({r.now_book}) | {r.min_acceptable_amer} | {r.est_board_close_amer} | "
-                     f"{r.pred_clv_pp:+.1f}pp | ${r.stake_usd:,.0f} | {'✅' if r.clears_min else '❌ PASS'} |")
+                     f"{r.pred_clv_pp:+.1f}pp | {real} | ${r.stake_usd:,.0f} | {'✅' if r.clears_min else '❌ PASS'} |")
         L.append("")
+    L.append(f"Real Stage-0 unit: ${real_unit:,.0f} flat per A-signal at min price or better "
+             "(your actual fills are logged as placed; paper Kelly is the shadow-evidence sizing). ")
+    L.append("")
 
     if len(graded):
         g = graded[graded.get("counts_prospective", pd.Series(dtype=bool)).astype(bool)] if "counts_prospective" in graded else graded
