@@ -378,30 +378,29 @@ def main():
         })
         scored_keys.add(skey)
 
-    # ---- staking allocation (amendment 2026-08-05a) ----
-    # A-tier Kelly stakes share a 1% per-event budget, first-come; a simultaneous
-    # batch that exceeds the remaining budget scales proportionally (backtest rule).
-    # B-tier gets a flat paper unit outside the event cap. Placed stakes never resize.
+    # ---- staking allocation (amendment 2026-08-05b) ----
+    # Bespoke MOV-HOLD staking: quarter-Kelly at the takeable price, 5% per-bet
+    # cap, NO event cap (card outcomes ~independent). Only guard: total A-tier
+    # stake open at once <= open_exposure_ceiling; an over-ceiling batch scales
+    # proportionally. Placed stakes never resize. B-tier: flat paper unit.
     bank = float(pol["sizing"].get("paper_bankroll_usd", 10000))
-    b_unit = float(pol["sizing"].get("b_tier_unit_fraction", 0.001))
-    ecap = float(pol["sizing"]["per_event_cap"])
+    b_unit = float(pol["sizing"].get("b_tier_unit_fraction", 0.005))
+    ceiling = float(pol["sizing"].get("open_exposure_ceiling", 0.25))
     if new_signals:
         ns = pd.DataFrame(new_signals)
-        ns["event_key"] = pd.to_datetime(ns.event_start, utc=True, format="mixed").dt.date.astype(str)
-        prior_alloc = {}
+        prior_open = 0.0
         if len(ledger) and "stake_fraction" in ledger:
             old = ledger[ledger.get("tier", pd.Series(dtype=str)).eq("A")].copy()
             if len(old):
-                old["event_key"] = pd.to_datetime(old.event_start, utc=True, format="mixed").dt.date.astype(str)
-                prior_alloc = old.groupby("event_key").stake_fraction.sum().to_dict()
-        for ek, grp in ns[ns.tier.eq("A") & ns.counts_prospective].groupby("event_key"):
-            budget = max(ecap - prior_alloc.get(ek, 0.0), 0.0)
-            want = ns.loc[grp.index, "stake_fraction"].astype(float)
-            if want.sum() > budget and want.sum() > 0:
-                ns.loc[grp.index, "stake_fraction"] = (want * budget / want.sum()).round(6)
-        ns["stake_usd"] = np.where(ns.tier.eq("A"), (ns.stake_fraction.astype(float) * bank).round(2),
+                unstarted = pd.to_datetime(old.event_start, utc=True, format="mixed") > now
+                prior_open = float(old.loc[unstarted, "stake_fraction"].fillna(0).sum())
+        amask = ns.tier.eq("A") & ns.counts_prospective
+        want = ns.loc[amask, "stake_fraction"].astype(float)
+        budget = max(ceiling - prior_open, 0.0)
+        if want.sum() > budget and want.sum() > 0:
+            ns.loc[amask, "stake_fraction"] = (want * budget / want.sum()).round(6)
+        ns["stake_usd"] = np.where(amask, (ns.stake_fraction.astype(float) * bank).round(2),
                           np.where(ns.tier.eq("B") & ns.counts_prospective, round(b_unit * bank, 2), 0.0))
-        ns = ns.drop(columns=["event_key"])
         new_signals = ns.to_dict("records")
 
     (md / "ledger").mkdir(exist_ok=True)

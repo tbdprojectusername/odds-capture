@@ -70,14 +70,18 @@ mid-run decision input.
 Expected volume: ~40 A signals/year, ~90–110 A+B/year. ROI at ±5pp resolution needs
 several hundred bets and is explicitly out of scope for this run's verdict.
 
-## Amendment 2026-08-05a — staking mechanics (fractions unchanged)
+## Amendment 2026-08-05b — bespoke staking (supersedes 05a; policy id → MOV-HOLD-2.1)
 
-Dollar normalization and live allocation specified the same day, before any graded
-outcome: $10,000 paper bankroll; Kelly computed at the price actually takeable
-(best if it clears the minimum, else the minimum); A-tier per-event budget is
-first-come with proportional scaling inside a simultaneous batch; placed stakes
-never resize; non-counting signals stake $0; B-tier = flat $10 paper units outside
-the event cap. Full mechanics and the scaling table: STAKING.md.
+Re-registered the same day, with **zero graded outcomes** at the time of change
+(nothing settled; no outcome was peeked). Gates, tiers, counting rules and metrics
+unchanged; the cohort continues. Staking is now derived from this strategy's own
+qualifier stream instead of the backtest's proof-stage caps: 0.25×Kelly at the
+takeable price, **5% per-bet cap, NO event cap**, 25% open-exposure circuit
+breaker, $10,000 paper bankroll, B-tier flat $50 paper units, non-counting
+signals $0. Simulation basis and dollar expectations: STAKING.md. Pre-accepted
+consequence: ~95%/yr handle, 10%+ drawdowns every few seasons, ~1-in-6 losing
+seasons if the edge is real. Any further sizing change after outcomes exist ends
+the cohort.
 
 ## Staking ramp (pre-committed)
 

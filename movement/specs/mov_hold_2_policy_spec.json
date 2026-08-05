@@ -1,6 +1,7 @@
 {
-  "policy_id": "MOV-HOLD-2",
+  "policy_id": "MOV-HOLD-2.1",
   "status": "prospective_dry_run",
+  "amendment_note": "2026-08-05b: bespoke staking re-registered before any graded outcome (zero settlements at time of change); gates, tiers, counting rules unchanged; cohort continues",
   "movement_model": "MOV-MKT-2",
   "derived_from": "MOV-HOLD-1 (independent audit 2026-08-05: prospective-shadow-ready)",
   "selection_side": "side with larger calibrated market-only EV at the entry quote",
@@ -28,14 +29,15 @@
   },
   "sizing": {
     "kelly_fraction": 0.25,
-    "per_bet_cap": 0.005,
-    "per_event_cap": 0.01,
+    "per_bet_cap": 0.05,
+    "per_event_cap": null,
+    "open_exposure_ceiling": 0.25,
     "paper_bankroll_usd": 10000,
-    "b_tier_unit_fraction": 0.001,
+    "b_tier_unit_fraction": 0.005,
     "kelly_price_basis": "best executable price when actionable, else minimum acceptable price",
-    "event_allocation": "A-tier only: remaining-budget per event (per_event_cap minus already-staked A bets); simultaneous batch over budget scales proportionally (backtest rule); placed stakes never resize",
+    "event_allocation": "NO event cap (fight outcomes on a card are ~independent). Circuit breaker only: total A-tier stake open at once <= open_exposure_ceiling; a batch that would exceed it scales proportionally; placed stakes never resize",
     "non_counting_signals_stake": 0,
-    "note": "amendment 2026-08-05a: mechanics specified, fractions unchanged; B-tier flat unit outside the event cap (paper only)"
+    "note": "amendment 2026-08-05b: bespoke staking derived from this strategy's own qualifier stream (favorite-heavy, ~87% win rate) via variant simulation (see STAKING.md); replaces proof-stage caps inherited from the backtest registry"
   },
   "cohorts": [
     "tier x side (favorite/underdog) tracked separately; dogs are IN per user decision 2026-08-05, small-sample caveat pre-registered",

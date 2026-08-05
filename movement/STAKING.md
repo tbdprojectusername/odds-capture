@@ -1,53 +1,61 @@
-# MOV-HOLD-2 staking (amendment 2026-08-05a — mechanics; fractions unchanged)
+# MOV-HOLD staking (amendment 2026-08-05b — bespoke, replaces 05a)
 
-Paper bankroll: **$10,000** (`paper_bankroll_usd` in the policy spec — one number to
-change; every stake scales linearly with it).
+This staking policy is derived **only from this strategy's own qualifier stream**
+(favorite-heavy, ~87% historical win rate, mean price ≈ −330, ~40 A-signals/yr) —
+not inherited from the picks-model policy or the backtest's proof-stage caps.
+Variant simulation over the 172 pre-2026 + 23 holdout bets and a 2,000-season
+event bootstrap: `staking_design.py` (audit scratchpad); results table below.
 
-## Tier A — the audited policy (Kelly, capped)
+Paper bankroll: **$10,000** (`paper_bankroll_usd` — the single scaling knob).
 
-1. **Edge basis:** the calibrated market probability `p` and the price actually
-   taken (best available if it clears the minimum; otherwise the minimum price).
-2. **Kelly fraction:** `k = (p·O − 1)/(O − 1)`, staked at **0.25×k**.
-3. **Per-bet cap: 0.50%** of bankroll ($50). Heavy favorites almost always hit this
-   cap (their raw Kelly is 2–6%), so most A stakes are cap-bound.
-4. **Per-event cap: 1.00%** ($100), A-tier only. First-come remaining-budget;
-   signals arriving in the same scoring run that jointly exceed the remaining
-   budget scale proportionally (the backtest's rule). Placed stakes never resize.
-5. Non-counting signals (late discovery, <24h to event, past events): **$0**.
+## Tier A rules
 
-Why these numbers: they were frozen from the pre-2026 staking registry (highest
-log-growth among variants with max drawdown ≤15%, verified in the audit — the
-historical path staked ~87% of bankroll cumulatively over 8 years with a 2.3% max
-drawdown). They are deliberately proof-stage small: the dry run's job is to settle
-whether the edge is real, not to make money while unproven.
+1. **Stake = 0.25 × Kelly** at the price actually takeable (best available if it
+   clears the minimum acceptable price, else the minimum).
+   `k = (p·O − 1)/(O − 1)`, `f = min(0.25·k, 5%)`.
+2. **Per-bet cap 5%** of bankroll ($500). Binds on heavy favorites (raw quarter-
+   Kelly reaches 10%+ there); costs almost no growth vs uncapped and removes the
+   −8% single-event tail.
+3. **No event cap.** Fight outcomes on one card are approximately independent;
+   the old 1% event cap was a proof-stage artifact. Multiple same-card signals
+   each get full size.
+4. **Open-exposure circuit breaker: 25%** of bankroll in unsettled A stakes at
+   once. Rarely binds (a 3-signal card ≈ 10–13%); exists for pathological weeks.
+   An over-ceiling batch scales proportionally; placed stakes never resize.
+5. Non-counting signals (late discovery, <24h, past events): $0.
 
-## Tier B — expansion cohort
+## Tier B
 
-Flat **$10** (0.10%) paper units, outside the event cap. B exists to accumulate CLV
-evidence at 3× volume; its stakes are bookkeeping, never money.
+Flat **$50** (0.5%) paper units, unlimited count. Evidence collection only.
 
-## What this looks like in dollars
+## Why this point on the curve (simulated on the strategy's own bets)
 
-Roughly 40 A-signals/year, mostly cap-bound: ~$1,400–1,800/year total staked at the
-$10k paper bankroll. At the audit's debiased ROI expectation (low-to-mid single
-digits if the edge is real), that is on the order of **$50–120/year of expected
-paper profit** — intentionally tiny. The instrument is the CLV ledger, not the P&L.
+| Variant (no event cap) | 8-season path | Max DD | Handle/yr | Boot p95 DD | P(losing season) |
+|---|---|---|---|---|---|
+| old 0.25K + 0.5% cap | +7.7% | 2.4% | 11% | — | — |
+| 0.25K + 3% cap | +47% | 10.7% | 68% | 7.9% | 16% |
+| **0.25K + 5% cap (chosen)** | **+60%** | **14.3%** | **95%** | **10.5%** | **16%** |
+| 0.25K uncapped | +69% | 15.0% | 114% | 13.1% | 20% |
+| 0.50K + 5% cap | +91% | 18.6% | 135% | 14.4% | 19% |
+| 0.50K uncapped | +172% | 28.3% | 311% | 24.1% | 18% |
 
-## Scaling (pre-committed path, PREREG "Staking ramp")
+Half-Kelly is the visible next rung, and it is deliberately NOT taken while the
+edge estimate carries selection-debias uncertainty (audit: raw +8.8% → debiased
+≈ +7.4% pre-2026). Over-Kelly on an overestimated edge is how bankrolls die.
+Revisit at the first GREEN review with prospective data in hand.
 
-Stakes grow only two ways, both gated on the green criteria:
-- **Bankroll scaling** — same fractions on a larger base (e.g., $50k bankroll →
-  $250 max bet, $500 event cap). This is the intended lever ("up our stake
-  amounts"): fractions stay frozen, the base grows with evidence.
-- **Token-real probe** after first GREEN review: ≤0.1% real per bet, A-tier
-  favorites only, named-book prices at or better than the minimum.
-- Full frozen fractions in real money only after a second consecutive GREEN.
+## What this means in dollars at $10k
 
-| Bankroll | Max/bet (0.5%) | Event cap (1%) | ~Annual staked | B unit |
-|---|---|---|---|---|
-| $10,000 | $50 | $100 | ~$1,500 | $10 |
-| $25,000 | $125 | $250 | ~$3,800 | $25 |
-| $50,000 | $250 | $500 | ~$7,500 | $50 |
+- Typical A bet **$300–500** (cap-bound on big favorites), ~40/yr.
+- **Handle ≈ $9,500/yr** (~95% of bankroll turned over) — 6.3× the 05a design.
+- Median season ≈ **+7%** if the edge is real; a losing season happens ~1 year
+  in 6; expect a **10%+ drawdown ($1,000+) every few seasons** — that is the
+  price of this aggression and it is pre-accepted here, in writing.
+- 2026 H1 replay under these rules: +19.1% on the 7 months, max DD 3.0%.
 
-Changing the Kelly multiplier, the caps, or moving B-tier to real money is a
-policy change: new id, new pre-registration, cohort restarts.
+## Scaling
+
+Fractions are frozen; the base scales. $25k → $1,250 max bet / ~$24k handle;
+$50k → $2,500 max bet / ~$48k handle. Real money still ramps per PREREG (paper →
+GREEN → token probe → second GREEN → full fractions). Changing the Kelly
+multiplier or caps again after outcomes exist = new policy id, cohort restart.
