@@ -16,7 +16,7 @@ import numpy as np
 import pandas as pd
 
 REPO = Path("C:/Users/cmtub/OneDrive/Documents/Betting Models/betting-models")
-OUTD = Path(__file__).parent / "reference"
+OUTD = Path(__file__).parent   # this script lives inside movement/reference/
 OUTD.mkdir(exist_ok=True)
 
 def nrm(x):
