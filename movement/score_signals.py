@@ -358,7 +358,9 @@ def main():
             "open_q_sel": round(qfav_open if sel_fav else 1 - qfav_open, 5),
             "entry_q_sel": round(q_sel_entry, 5),
             "entry_consensus_dec": round(sel["odds"], 4),
-            "best_dec": round(float(sel["best"]), 4), "best_book": sel["best_bk"],
+            "entry_consensus_amer": dec_to_amer(sel["odds"]),
+            "best_dec": round(float(sel["best"]), 4),
+            "best_amer": dec_to_amer(float(sel["best"])), "best_book": sel["best_bk"],
             "min_acceptable_dec": round(min_price, 4),
             "min_acceptable_amer": dec_to_amer(min_price),
             "actionable_now": actionable,
@@ -380,8 +382,8 @@ def main():
     (md / "state/new_alerts.json").write_text(json.dumps(alerts, indent=1), encoding="utf-8")
     print(json.dumps({"pairs_tracked": len(state), "newly_scored": len(new_signals),
                       "alerts": [{k: a[k] for k in ("tier", "selected_fighter", "selected_side",
-                                                    "min_acceptable_dec", "min_acceptable_amer",
-                                                    "best_dec", "best_book", "actionable_now",
+                                                    "min_acceptable_amer", "min_acceptable_dec",
+                                                    "best_amer", "best_book", "actionable_now",
                                                     "event_start")} for a in alerts]}, indent=1))
 
 

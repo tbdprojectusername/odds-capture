@@ -90,15 +90,15 @@ jobs:
           alerts = json.loads(p.read_text()) if p.exists() else []
           for a in alerts:
               act = "ACTIONABLE NOW" if a["actionable_now"] else "WATCH (price below minimum)"
-              title = f"[{a['tier']}] {a['selected_fighter']} ({a['selected_side']}) >= {a['min_acceptable_dec']} ({a['min_acceptable_amer']}) — {act}"
+              title = f"[{a['tier']}] {a['selected_fighter']} ({a['selected_side']}) at {a['min_acceptable_amer']} or better — {act}"
               body = "\n".join([
                   f"**Event start:** {a['event_start']}",
                   f"**Bet:** {a['selected_fighter']} ({a['selected_side']}, tier {a['tier']})",
-                  f"**Minimum acceptable price:** {a['min_acceptable_dec']} decimal ({a['min_acceptable_amer']}) — below this: PASS",
-                  f"**Best captured price:** {a['best_dec']} at {a['best_book']}",
+                  f"**Minimum acceptable price:** {a['min_acceptable_amer']} ({a['min_acceptable_dec']} decimal) — anything worse: PASS",
+                  f"**Best captured price:** {a['best_amer']} at {a['best_book']} ({a['best_dec']} decimal)",
                   f"**Model:** p={a['p_market']}, EV at entry {a['ev_entry']:+.1%}, steam {a['steam_prob']:.0%}, predicted CLV {a['pred_clv_pp']:+.2f}pp",
                   f"**Paper stake:** {a['stake_fraction']:.2%} of bankroll" if a['tier']=='A' else "**Paper stake:** flat 1u (B-tier, paper only)",
-                  "", "Rules: bet at or above the minimum price at any book; no chasing, no rebets. See movement/PREREG.md.",
+                  "", "Rules: bet at the minimum price or better at any book; no chasing, no rebets. See movement/PREREG.md.",
               ])
               subprocess.run(["gh", "issue", "create", "--title", title, "--body", body],
                              check=False)
