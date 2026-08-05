@@ -1,5 +1,5 @@
 {
- "generated": "2026-08-05 22:15:37.658780+00:00",
+ "generated": "2026-08-05 23:13:40.085121+00:00",
  "policy_id": "MOV-HOLD-2.2",
  "remediation_ts": "2026-08-05 20:30:00+00:00",
  "verdict": "NOT_GREEN",
@@ -53,5 +53,31 @@
   },
   "open_source_strata": []
  },
- "rows_used": []
+ "rows_used": [],
+ "checkpoint1": {
+  "status": "NOT_YET",
+  "criteria": {
+   "filled_A_favorites": {
+    "value": 0,
+    "bar": ">= 12",
+    "pass": false
+   },
+   "exec_at_scoring_rate": {
+    "value": null,
+    "bar": ">= 0.60",
+    "pass": false
+   },
+   "clv_mean_pp": {
+    "value": null,
+    "bar": "> 0",
+    "pass": false
+   },
+   "clv_ci_lower_pp": {
+    "value": null,
+    "bar": "> -1.0",
+    "pass": false
+   }
+  },
+  "consequence": "PASS permits doubling the fixed real unit (addendum 05e); FAIL of exec<30% or CLV CI entirely <0 at n>=12 means STOP"
+ }
 }

@@ -1,6 +1,6 @@
 # GREEN report — MOV-HOLD-2.2
 
-Generated 2026-08-05 22:15:37.658780+00:00 · verdict: **NOT_GREEN**
+Generated 2026-08-05 23:13:40.085121+00:00 · verdict: **NOT_GREEN**
 
 Funnel: graded 1 → tier_A 1 → favorites 1 → counts_prospective 0 → post_remediation 0 → paper_filled 0 → roi_cohort_eligible 0 → eligible_close_le60m 0
 

@@ -128,6 +128,33 @@ all in code at this addendum's commit:
   a bootstrap CI on the signed mean excluding ±0.5pp. Until it passes,
   Pinnacle-only and retail-composite opens are never pooled in GREEN.
 
+## Staged live protocol (2026-08-05e — user risk decision, registered with full disclosure)
+
+The principal has elected to attach real money to A-tier signals immediately
+rather than waiting for GREEN. This is documented as a risk decision, not a
+validation claim. Disclosure on record: the historical signal evidence is
+mature (audited excess CLV; deployed-pipeline 2026 replay ROI +20.2%
+[−4.4, +44.7], CLV +5.45pp [+2.84, +8.06] on archive prices), but archive
+prices are not proven executable, the live pipeline differs (91.6% parity),
+and the transport test currently FAILS (2026-08-05: 26 pairs, mean |gap|
+1.33pp, p90 2.73pp).
+
+- **Stage 0 (now):** real bets permitted on counted, paper-filled **Tier A**
+  signals only, at fills at/above the minimum price, at a FIXED flat unit
+  chosen by the principal (recorded in real_bets.csv; recommended ≤1% of real
+  bankroll). Dogs and Tier B: paper only. Every real bet logged with book,
+  bet id, accepted time, price, stake.
+- **Checkpoint 1 (mechanical, in green_report.py):** at ≥12 filled A-favorite
+  signals with eligible closes — executable-at-scoring ≥60%, CLV mean > 0,
+  CLV CI lower > −1.0pp → the fixed unit may double once. Hard stop rule:
+  executable-match <30% sustained, or CLV CI entirely below zero at n≥12 →
+  real betting stops; system returns to paper.
+- **Checkpoint 2 = GREEN (unchanged):** frozen Kelly fractions only after
+  GREEN + fill-aware staking simulation + second independent GREEN, exactly
+  as already registered.
+- The transport test reruns monthly as capture accrues; until it passes,
+  Pinnacle-only-open signals are reported separately everywhere.
+
 ## Independent recheck (V8 prerequisite 16)
 
 Before any GREEN is trusted, an independent reviewer re-runs: chain hashes,

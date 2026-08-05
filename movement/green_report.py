@@ -107,6 +107,23 @@ def main():
     out["checks"]["open_source_strata"] = strata.to_dict("records")
     out["rows_used"] = sorted(z_clv.signal_key.tolist())
     out["verdict"] = "GREEN" if all(v[2] for v in checks.values()) else "NOT_GREEN"
+
+    # ---- Checkpoint 1 (addendum 2026-08-05e): early real-unit step-up gate ----
+    # Small-n directional read on the two fast-resolving unknowns: executable
+    # prices and live CLV direction. Never a GREEN substitute.
+    cp_n = len(z_clv)
+    cp = {
+        "filled_A_favorites": (cp_n, ">= 12", cp_n >= 12),
+        "exec_at_scoring_rate": (round(exec_rate, 3) if np.isfinite(exec_rate) else None, ">= 0.60",
+                                 bool(np.isfinite(exec_rate) and exec_rate >= 0.60)),
+        "clv_mean_pp": (round(float(mu), 3) if np.isfinite(mu) else None, "> 0",
+                        bool(np.isfinite(mu) and mu > 0)),
+        "clv_ci_lower_pp": (round(float(lo), 3) if np.isfinite(lo) else None, "> -1.0",
+                            bool(np.isfinite(lo) and lo > -1.0)),
+    }
+    out["checkpoint1"] = {"status": "PASS" if all(v[2] for v in cp.values()) else "NOT_YET",
+                          "criteria": {k: {"value": v[0], "bar": v[1], "pass": v[2]} for k, v in cp.items()},
+                          "consequence": "PASS permits doubling the fixed real unit (addendum 05e); FAIL of exec<30% or CLV CI entirely <0 at n>=12 means STOP"}
     _write(md, out, z_clv.signal_key.tolist())
 
 
