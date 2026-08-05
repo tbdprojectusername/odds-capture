@@ -339,12 +339,16 @@ def main():
         elif sel["ev"] >= gb["min_ev"] and sel["steam"] >= gb["min_steam"] and sel["pred_clv_pp"] >= gb["min_pred_clv_pp"]:
             tier = "B"
         min_price = (1 + exec_floor) / sel["p"]
-        kelly = max((sel["p"] * min_price - 1) / (min_price - 1), 0.0)
-        stake = min(pol["sizing"]["kelly_fraction"] * kelly, pol["sizing"]["per_bet_cap"])
         lag_h = (now - pd.to_datetime(srow.first_seen, utc=True)).total_seconds() / 3600
         hours_to_start = (start - now).total_seconds() / 3600
         counts = bool(tier) and lag_h <= 168 and hours_to_start >= 24
         actionable = bool(tier == "A" and sel["best"] >= min_price and counts)
+        # Kelly at the price you would actually take (best when it clears, else min).
+        kprice = float(sel["best"]) if sel["best"] >= min_price else min_price
+        kelly = max((sel["p"] * kprice - 1) / (kprice - 1), 0.0)
+        stake = min(pol["sizing"]["kelly_fraction"] * kelly, pol["sizing"]["per_bet_cap"])
+        if not counts or tier != "A":
+            stake = 0.0   # A-tier Kelly stakes only; B-tier gets its flat unit below
         # entry no-vig q of selected side for CLV grading
         q1_entry = float(entry["q1"]) if "q1" in entry else q1_open
         qfav_entry = q1_entry if fav_is_f1 else 1 - q1_entry
@@ -374,17 +378,52 @@ def main():
         })
         scored_keys.add(skey)
 
+    # ---- staking allocation (amendment 2026-08-05a) ----
+    # A-tier Kelly stakes share a 1% per-event budget, first-come; a simultaneous
+    # batch that exceeds the remaining budget scales proportionally (backtest rule).
+    # B-tier gets a flat paper unit outside the event cap. Placed stakes never resize.
+    bank = float(pol["sizing"].get("paper_bankroll_usd", 10000))
+    b_unit = float(pol["sizing"].get("b_tier_unit_fraction", 0.001))
+    ecap = float(pol["sizing"]["per_event_cap"])
+    if new_signals:
+        ns = pd.DataFrame(new_signals)
+        ns["event_key"] = pd.to_datetime(ns.event_start, utc=True, format="mixed").dt.date.astype(str)
+        prior_alloc = {}
+        if len(ledger) and "stake_fraction" in ledger:
+            old = ledger[ledger.get("tier", pd.Series(dtype=str)).eq("A")].copy()
+            if len(old):
+                old["event_key"] = pd.to_datetime(old.event_start, utc=True, format="mixed").dt.date.astype(str)
+                prior_alloc = old.groupby("event_key").stake_fraction.sum().to_dict()
+        for ek, grp in ns[ns.tier.eq("A") & ns.counts_prospective].groupby("event_key"):
+            budget = max(ecap - prior_alloc.get(ek, 0.0), 0.0)
+            want = ns.loc[grp.index, "stake_fraction"].astype(float)
+            if want.sum() > budget and want.sum() > 0:
+                ns.loc[grp.index, "stake_fraction"] = (want * budget / want.sum()).round(6)
+        ns["stake_usd"] = np.where(ns.tier.eq("A"), (ns.stake_fraction.astype(float) * bank).round(2),
+                          np.where(ns.tier.eq("B") & ns.counts_prospective, round(b_unit * bank, 2), 0.0))
+        ns = ns.drop(columns=["event_key"])
+        new_signals = ns.to_dict("records")
+
     (md / "ledger").mkdir(exist_ok=True)
     if new_signals:
-        ledger = pd.concat([ledger, pd.DataFrame(new_signals)], ignore_index=True)
+        add = pd.DataFrame(new_signals)
+        ledger = add if ledger.empty else pd.concat([ledger, add], ignore_index=True)
+        # American columns are display strings; regenerate from decimals on every
+        # write so CSV round-trips can never strip the "+" sign.
+        for dc, ac in [("entry_consensus_dec", "entry_consensus_amer"),
+                       ("best_dec", "best_amer"),
+                       ("min_acceptable_dec", "min_acceptable_amer")]:
+            if dc in ledger:
+                ledger[ac] = pd.to_numeric(ledger[dc], errors="coerce").map(
+                    lambda d: dec_to_amer(d) if pd.notna(d) else "")
         ledger.to_csv(ledger_p, index=False)
     alerts = [s for s in new_signals if s["tier"] in ("A", "B") and s["counts_prospective"]]
     (md / "state/new_alerts.json").write_text(json.dumps(alerts, indent=1), encoding="utf-8")
     print(json.dumps({"pairs_tracked": len(state), "newly_scored": len(new_signals),
-                      "alerts": [{k: a[k] for k in ("tier", "selected_fighter", "selected_side",
-                                                    "min_acceptable_amer", "min_acceptable_dec",
-                                                    "best_amer", "best_book", "actionable_now",
-                                                    "event_start")} for a in alerts]}, indent=1))
+                      "alerts": [{k: a.get(k) for k in ("tier", "selected_fighter", "selected_side",
+                                                        "min_acceptable_amer", "min_acceptable_dec",
+                                                        "best_amer", "best_book", "actionable_now",
+                                                        "stake_usd", "event_start")} for a in alerts]}, indent=1))
 
 
 if __name__ == "__main__":

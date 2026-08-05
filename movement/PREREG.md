@@ -70,6 +70,15 @@ mid-run decision input.
 Expected volume: ~40 A signals/year, ~90–110 A+B/year. ROI at ±5pp resolution needs
 several hundred bets and is explicitly out of scope for this run's verdict.
 
+## Amendment 2026-08-05a — staking mechanics (fractions unchanged)
+
+Dollar normalization and live allocation specified the same day, before any graded
+outcome: $10,000 paper bankroll; Kelly computed at the price actually takeable
+(best if it clears the minimum, else the minimum); A-tier per-event budget is
+first-come with proportional scaling inside a simultaneous batch; placed stakes
+never resize; non-counting signals stake $0; B-tier = flat $10 paper units outside
+the event cap. Full mechanics and the scaling table: STAKING.md.
+
 ## Staking ramp (pre-committed)
 
 Paper throughout the dry run. IF GREEN at a quarterly review: token real stakes

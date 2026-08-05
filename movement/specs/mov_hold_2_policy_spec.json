@@ -30,7 +30,12 @@
     "kelly_fraction": 0.25,
     "per_bet_cap": 0.005,
     "per_event_cap": 0.01,
-    "note": "paper bankroll; B-tier tracked at flat 1u alongside Kelly for cohort comparison"
+    "paper_bankroll_usd": 10000,
+    "b_tier_unit_fraction": 0.001,
+    "kelly_price_basis": "best executable price when actionable, else minimum acceptable price",
+    "event_allocation": "A-tier only: remaining-budget per event (per_event_cap minus already-staked A bets); simultaneous batch over budget scales proportionally (backtest rule); placed stakes never resize",
+    "non_counting_signals_stake": 0,
+    "note": "amendment 2026-08-05a: mechanics specified, fractions unchanged; B-tier flat unit outside the event cap (paper only)"
   },
   "cohorts": [
     "tier x side (favorite/underdog) tracked separately; dogs are IN per user decision 2026-08-05, small-sample caveat pre-registered",
