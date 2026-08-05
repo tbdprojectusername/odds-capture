@@ -370,6 +370,13 @@ def main():
             "actionable_now": actionable,
             "p_market": round(sel["p"], 5), "ev_entry": round(sel["ev"], 5),
             "steam_prob": round(sel["steam"], 5), "pred_clv_pp": round(sel["pred_clv_pp"], 3),
+            # projected close of the SELECTED side: fair (no-vig) and an
+            # approximate board price re-applying the opening hold. Display only —
+            # selection uses gates + entry EV, never these.
+            "pred_close_q_sel": round(pred_qclose_fav if sel_fav else 1 - pred_qclose_fav, 5),
+            "pred_fair_close_dec": round(1 / (pred_qclose_fav if sel_fav else 1 - pred_qclose_fav), 4),
+            "est_board_close_dec": round(1 / min((pred_qclose_fav if sel_fav else 1 - pred_qclose_fav)
+                                                 * (1 + float(srow.open_vig)), 0.999), 4),
             "stake_fraction": round(stake, 6),
             "open_n_books": int(srow.open_n_books), "open_source": srow.open_source,
             "fighters_matched": bool(ff["matched"] and fd["matched"]),
@@ -411,7 +418,9 @@ def main():
         # write so CSV round-trips can never strip the "+" sign.
         for dc, ac in [("entry_consensus_dec", "entry_consensus_amer"),
                        ("best_dec", "best_amer"),
-                       ("min_acceptable_dec", "min_acceptable_amer")]:
+                       ("min_acceptable_dec", "min_acceptable_amer"),
+                       ("pred_fair_close_dec", "pred_fair_close_amer"),
+                       ("est_board_close_dec", "est_board_close_amer")]:
             if dc in ledger:
                 ledger[ac] = pd.to_numeric(ledger[dc], errors="coerce").map(
                     lambda d: dec_to_amer(d) if pd.notna(d) else "")

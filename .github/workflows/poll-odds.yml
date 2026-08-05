@@ -97,6 +97,7 @@ jobs:
                   f"**Minimum acceptable price:** {a['min_acceptable_amer']} ({a['min_acceptable_dec']} decimal) — anything worse: PASS",
                   f"**Best captured price:** {a['best_amer']} at {a['best_book']} ({a['best_dec']} decimal)",
                   f"**Model:** p={a['p_market']}, EV at entry {a['ev_entry']:+.1%}, steam {a['steam_prob']:.0%}, predicted CLV {a['pred_clv_pp']:+.2f}pp",
+                  f"**Projected close:** fair {a.get('pred_fair_close_amer','?')} / board ~{a.get('est_board_close_amer','?')} (display only, not a selection input)",
                   (f"**Paper stake:** ${a.get('stake_usd', 0):.2f} ({a['stake_fraction']:.2%} of paper bankroll)"
                    if a['tier'] == 'A' else
                    f"**Paper stake:** ${a.get('stake_usd', 0):.2f} flat (B-tier, paper only)"),
