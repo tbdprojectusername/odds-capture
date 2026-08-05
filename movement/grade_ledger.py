@@ -52,7 +52,13 @@ def main():
     led["event_start"] = pd.to_datetime(led.event_start, utc=True, format="mixed")
     graded_p = md / "ledger/graded.csv"
     graded = pd.read_csv(graded_p) if graded_p.exists() else pd.DataFrame(columns=["signal_key"])
-    done = set(graded.signal_key) if len(graded) else set()
+    # pending rows re-grade when a result arrives; their old row is replaced
+    if len(graded) and "status" in graded:
+        pending_keys = set(graded[graded.status.eq("pending_settlement")].signal_key)
+        done = set(graded.signal_key) - pending_keys
+        graded = graded[~graded.signal_key.isin(pending_keys)]
+    else:
+        done = set(graded.signal_key) if len(graded) else set()
 
     results_p = md / "results/results.csv"
     results = pd.read_csv(results_p) if results_p.exists() else pd.DataFrame(columns=["signal_key", "winner_key"])

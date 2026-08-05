@@ -55,5 +55,12 @@
     "remediation_ts": "2026-08-05T20:30:00Z",
     "trigger": "Codex V8 deployment audit (movement/audits/)",
     "roi_cohort_rule": "paper ROI/staking evidence counts only for paper_filled signals scored at/after remediation_ts; earlier rows remain descriptive (CLV only)"
+  },
+  "real_bets_stage0": {
+    "registered": "addendum 2026-08-05e",
+    "real_bankroll_usd": 10000,
+    "real_unit_usd": 100,
+    "rule": "flat $100 per counted+filled Tier A signal at/above the minimum price; dogs and Tier B paper only; unit may double once at Checkpoint 1 PASS (green_report.py)",
+    "stop_rule": "executable-match <30% sustained, or CLV CI entirely below zero at n>=12 -> real betting stops"
   }
 }

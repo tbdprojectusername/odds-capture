@@ -1,6 +1,6 @@
 # MOV-HOLD-2.2 dashboard
 
-Updated 2026-08-05 22:13 UTC · policy `MOV-HOLD-2.2` · paper bankroll $10,000 · signals 12 (A 4 / B 8) · graded 1
+Updated 2026-08-05 23:18 UTC · policy `MOV-HOLD-2.2` · paper bankroll $10,000 · signals 12 (A 4 / B 8) · graded 1
 
 ## Real bets
 
@@ -34,7 +34,7 @@ Updated 2026-08-05 22:13 UTC · policy `MOV-HOLD-2.2` · paper bankroll $10,000 
 | esteban ribovics | favorite | Aug 15 | -386 | -386 (Pinnacle) | -405 | -434 | +1.9pp | $50 | ✅ |
 | lucas fernando | favorite | Aug 15 | -205 | -205 (Caesars) | -209 | -237 | +1.7pp | $50 | ✅ |
 | ramiz brahimaj | underdog | Aug 15 | -103 | -103 (Pinnacle) | -112 | -127 | +4.1pp | $50 | ✅ |
-| vicente luque | underdog | Aug 15 | +120 | +120 (Pinnacle) | +109 | -103 | +2.4pp | $50 | ✅ |
+| vicente luque | underdog | Aug 15 | +120 | +121 (Pinnacle) | +109 | -103 | +2.4pp | $50 | ✅ |
 
 ## Upcoming
 

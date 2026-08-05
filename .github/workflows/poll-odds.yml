@@ -124,6 +124,9 @@ jobs:
                   (f"**Paper stake:** ${a.get('stake_usd', 0):.2f} ({a['stake_fraction']:.2%} of paper bankroll)"
                    if a['tier'] == 'A' else
                    f"**Paper stake:** ${a.get('stake_usd', 0):.2f} flat (B-tier, paper only)"),
+                  (f"**YOUR REAL STAKE (Stage 0):** ${a['real_stake_usd']:.0f} flat — only at {a['min_acceptable_amer']} or better; after betting, comment your fill here (price / book / bet id / stake)."
+                   if a.get('real_stake_usd') else
+                   "**Real money:** none (B-tier and dogs are paper-only in Stage 0)."),
                   "", "Rules: bet at the minimum price or better at any book; no chasing, no rebets. See movement/PREREG.md.",
                   "", f"signal_key: `{a['signal_key']}`",   # durable dedup marker
               ])

@@ -472,7 +472,11 @@ def main():
                 ledger[ac] = pd.to_numeric(ledger[dc], errors="coerce").map(
                     lambda d: dec_to_amer(d) if pd.notna(d) else "")
         ledger.to_csv(ledger_p, index=False)
+    real_unit = float(pol.get("real_bets_stage0", {}).get("real_unit_usd", 0))
     alerts = [s for s in new_signals if s["tier"] in ("A", "B") and s["counts_prospective"]]
+    for a in alerts:
+        if a["tier"] == "A" and real_unit > 0:
+            a["real_stake_usd"] = real_unit
     (md / "state/new_alerts.json").write_text(json.dumps(alerts, indent=1), encoding="utf-8")
     print(json.dumps({"pairs_tracked": len(state), "newly_scored": len(new_signals),
                       "alerts": [{k: a.get(k) for k in ("tier", "selected_fighter", "selected_side",

@@ -36,9 +36,10 @@ jobs:
         run: |
           git config user.name  "odds-capture-bot"
           git config user.email "actions@github.com"
+          python movement/results_fetch.py || echo "::warning::results fetch failed; settlement stays pending"
           python movement/grade_ledger.py
           python movement/morning_brief.py
-          git add movement/ledger movement/reference movement/state movement/DASHBOARD.md
+          git add movement/results movement/ledger movement/reference movement/state movement/DASHBOARD.md
           if ! git diff --cached --quiet; then
             git commit -m "movement: morning brief $(date -u +%Y-%m-%d)"
             OK=0
