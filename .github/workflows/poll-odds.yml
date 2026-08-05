@@ -107,6 +107,10 @@ jobs:
               return len(json.loads(r.stdout)) > 0
           failures = 0
           for a in alerts:
+              # Issues = the user's push channel: REAL picks only. B-tier paper
+              # signals stay in the ledger, dashboard, and morning brief.
+              if a["tier"] != "A":
+                  print("no issue for paper-only tier:", a["signal_key"]); continue
               act = "ACTIONABLE NOW" if a["actionable_now"] else "WATCH (price below minimum)"
               title = f"[{a['tier']}] {a['selected_fighter']} ({a['selected_side']}) at {a['min_acceptable_amer']} or better — {act}"
               try:
