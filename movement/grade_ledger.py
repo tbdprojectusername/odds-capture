@@ -65,6 +65,8 @@ def main():
     for _, r in led.iterrows():
         if r.signal_key in done or pd.isna(r.event_start):
             continue
+        if str(r.tier) not in ("A", "B"):
+            continue
         if now < r.event_start + pd.Timedelta(hours=6):
             continue
         pair = r.signal_key.rsplit("|", 1)[0]
@@ -122,25 +124,7 @@ def main():
         if adds:
             pd.concat([flog, pd.DataFrame(adds)], ignore_index=True).to_csv(logp, index=False)
 
-    # ---------------- dashboard ----------------
-    lines = ["# MOV-HOLD-2 prospective dry run — dashboard",
-             f"\nUpdated {now:%Y-%m-%d %H:%M} UTC. Primary metric: CLV vs Pinnacle close.",
-             f"Signals logged: {len(led)} | graded: {len(graded)}\n"]
-    if len(graded):
-        g = graded[graded.counts_prospective.astype(bool)]
-        for (tier, side), gg in g.groupby(["tier", "selected_side"]):
-            m, lo, hi = cluster_ci(gg, "clv_pp_vs_pinnacle_close")
-            settled = gg[gg.status.eq("settled")]
-            roi = settled.unit_return.mean() if len(settled) else np.nan
-            lines.append(f"- **Tier {tier} / {side}**: n={len(gg)}, CLV {m:+.2f}pp "
-                         f"[{lo:+.2f}, {hi:+.2f}], settled {len(settled)}, "
-                         f"flat ROI {'n/a' if pd.isna(roi) else f'{roi:+.1%}'}")
-        allg = g.copy()
-        m, lo, hi = cluster_ci(allg, "clv_pp_vs_pinnacle_close")
-        lines.append(f"\n**All prospective signals**: n={len(allg)}, CLV vs Pinnacle close "
-                     f"{m:+.2f}pp [{lo:+.2f}, {hi:+.2f}]")
-        lines.append("\nPass/fail bars are pre-registered in PREREG.md; do not reinterpret mid-run.")
-    (md / "DASHBOARD.md").write_text("\n".join(lines), encoding="utf-8")
+    # Dashboard rendering lives in morning_brief.py (run it after this script).
     print(json.dumps({"graded_new": len(new_rows), "graded_total": len(graded)}, indent=1))
 
 

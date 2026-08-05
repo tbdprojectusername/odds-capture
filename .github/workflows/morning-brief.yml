@@ -1,0 +1,63 @@
+name: morning-brief
+
+# Daily 9am ET routine: grade settled events, refresh the dashboard, and open a
+# morning-brief issue when there is news (new picks, actionability flips, fresh
+# grades, events within 48h). Supersedes the old weekly grade-ledger workflow.
+on:
+  schedule:
+    - cron: "0 13 * * *"
+  workflow_dispatch: {}
+
+concurrency:
+  group: poll-odds
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  brief:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Grade, refresh dashboard
+        run: |
+          git config user.name  "odds-capture-bot"
+          git config user.email "actions@github.com"
+          python movement/grade_ledger.py
+          python movement/morning_brief.py
+          git add movement/ledger movement/reference movement/state movement/DASHBOARD.md
+          if ! git diff --cached --quiet; then
+            git commit -m "movement: morning brief $(date -u +%Y-%m-%d)"
+            for a in 1 2 3; do
+              git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && \
+              git push origin "HEAD:${GITHUB_REF_NAME}" && break
+              echo "push attempt $a failed, retrying"; sleep 5
+            done
+          fi
+
+      - name: Open brief issue when there is news
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import json, subprocess, pathlib
+          p = pathlib.Path("movement/state/new_brief.json")
+          if not p.exists():
+              print("quiet morning — no issue"); raise SystemExit
+          b = json.loads(p.read_text())
+          body = "\n\n".join(b["sections"]) + "\n\nFull board: movement/DASHBOARD.md"
+          subprocess.run(["gh", "issue", "create",
+                          "--title", f"Morning brief {b['date']}",
+                          "--body", body], check=False)
+          PY

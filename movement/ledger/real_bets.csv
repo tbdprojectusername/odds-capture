@@ -1,0 +1,5 @@
+placed_at,bet_id,signal_key,fighter,tier,price_amer,price_dec,stake,currency,to_win,price_source,book,status
+2026-08-05T19:00:00Z,2255325584,charles johnson|jose ochoa|2026-08-15,jose ochoa,A,-327,1.3058,50.0,CAD,15.29,user_confirmed,,open
+2026-08-05T19:00:00Z,2255325511,jeremiah wells|myktybek orolbai|2026-08-15,myktybek orolbai,A,-500,1.2,300.0,CAD,60.0,user_confirmed,,open
+2026-08-05T19:00:00Z,,donte johnson|eric mcconico|2026-08-15,donte johnson,A,-230,1.4348,50.0,CAD,21.74,assumed_from_capture_best,Caesars?,open
+2026-08-05T19:00:00Z,,neil magny|ramiz brahimaj|2026-08-15,ramiz brahimaj,B,-103,1.9709,50.0,CAD,48.54,assumed_from_capture_best,Pinnacle?,open
