@@ -1,6 +1,6 @@
 # MOV-HOLD-2.2 dashboard
 
-Updated 2026-08-06 15:16 UTC · policy `MOV-HOLD-2.2` · paper bankroll $10,000 · signals 12 (A 4 / B 8) · graded 1
+Updated 2026-08-06 18:40 UTC · policy `MOV-HOLD-2.2` · paper bankroll $10,000 · signals 12 (A 4 / B 8) · graded 1
 
 ## Real bets
 
@@ -27,7 +27,7 @@ Updated 2026-08-06 15:16 UTC · policy `MOV-HOLD-2.2` · paper bankroll $10,000 
 |---|---|---|---|---|---|---|---|---|---|---|
 | diyar nurgozhay | favorite | Aug 08 | -148 | -148 (Pinnacle) | -158 | -180 | +3.9pp | $0 (paper) | $50 | ✅ |
 | guilherme pat | underdog | Aug 08 | +240 | +241 (Pinnacle) | +200 | +175 | +2.1pp | $0 (paper) | $50 | ✅ |
-| manoel sousa | favorite | Aug 08 | -250 | -265 (BetRivers) | -269 | -301 | +2.1pp | $0 (paper) | $50 | ✅ |
+| manoel sousa | favorite | Aug 08 | -250 | -278 (BetRivers) | -269 | -301 | +2.1pp | $0 (paper) | $50 | ❌ PASS |
 | mansur abdul malik | favorite | Aug 15 | -538 | -538 (Pinnacle) | -623 | -626 | +1.6pp | $0 (paper) | $50 | ✅ |
 | esteban ribovics | favorite | Aug 15 | -386 | -397 (Pinnacle) | -405 | -434 | +1.9pp | $0 (paper) | $50 | ✅ |
 | lucas fernando | favorite | Aug 15 | -205 | -220 (Pinnacle) | -209 | -237 | +1.7pp | $0 (paper) | $50 | ❌ PASS |
