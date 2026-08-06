@@ -26129,3 +26129,213 @@ poll_time,event_slug,event_name,matchup_id,side,selection,row_kind,book_id,book,
 2026-08-06T03:25:32.531245+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44330,2,Ravena Oliveira,moneyline,25,BetRivers,225,▲
 2026-08-06T03:25:32.531245+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44330,2,Ravena Oliveira,moneyline,20,BetWay,210,
 2026-08-06T03:25:32.531245+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44330,2,Ravena Oliveira,moneyline,26,Unibet,225,▲
+2026-08-06T03:35:43.565783+00:00,noche-ufc-4299,Noche UFC Odds,44360,1,Jean Silva,moneyline,24,Caesars,-300,
+2026-08-06T03:35:43.565783+00:00,noche-ufc-4299,Noche UFC Odds,44360,2,Yair Rodriguez,moneyline,24,Caesars,240,
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44347,1,Dustin Stoltzfus,moneyline,28,Polymarket,456,▲
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44347,1,Dustin Stoltzfus,moneyline,24,Caesars,430,▲
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44347,2,Mansur Abdul-Malik,moneyline,28,Polymarket,-488,
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44347,2,Mansur Abdul-Malik,moneyline,24,Caesars,-600,▼
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44351,1,Edson Barboza,moneyline,28,Polymarket,335,
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44351,1,Edson Barboza,moneyline,24,Caesars,310,
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44351,2,Esteban Ribovics,moneyline,28,Polymarket,-355,▲
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44351,2,Esteban Ribovics,moneyline,24,Caesars,-400,
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44353,1,Tresean Gore,moneyline,28,Polymarket,-127,
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44353,1,Tresean Gore,moneyline,24,Caesars,-130,
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44353,2,Vicente Luque,moneyline,28,Polymarket,122,▲
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44353,2,Vicente Luque,moneyline,24,Caesars,110,▲
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44348,1,Jeremiah Wells,moneyline,28,Polymarket,488,▲
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44348,1,Jeremiah Wells,moneyline,24,Caesars,430,
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44348,2,Myktybek Orolbai,moneyline,28,Polymarket,-525,
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44348,2,Myktybek Orolbai,moneyline,24,Caesars,-600,
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44350,1,Neil Magny,moneyline,28,Polymarket,-104,▲
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44350,1,Neil Magny,moneyline,24,Caesars,-110,
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44350,2,Ramiz Brahimaj,moneyline,28,Polymarket,-108,▲
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44350,2,Ramiz Brahimaj,moneyline,24,Caesars,-110,
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44352,1,Charles Johnson,moneyline,24,Caesars,280,▲
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44352,2,Jose Ochoa,moneyline,24,Caesars,-360,▼
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44354,1,Donte Johnson,moneyline,24,Caesars,-230,
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44354,2,Eric McConico,moneyline,24,Caesars,190,
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44355,1,Lucas Fernando,moneyline,24,Caesars,-205,
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44355,2,Rafael Tobias,moneyline,24,Caesars,170,
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44359,1,Chidi Njokuani,moneyline,24,Caesars,195,
+2026-08-06T03:35:43.565783+00:00,ufc-330-4237,UFC 330 Odds,44359,2,Joel Alvarez,moneyline,24,Caesars,-235,
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,43741,1,Ian Machado Garry,moneyline,28,Polymarket,335,
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,43741,1,Ian Machado Garry,moneyline,21,FanDuel,280,▲
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,43741,1,Ian Machado Garry,moneyline,24,Caesars,280,▲
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,43741,1,Ian Machado Garry,moneyline,25,BetRivers,270,▲
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,43741,1,Ian Machado Garry,moneyline,20,BetWay,250,▼
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,43741,1,Ian Machado Garry,moneyline,26,Unibet,270,▲
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,43741,2,Islam Makhachev,moneyline,28,Polymarket,-355,▲
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,43741,2,Islam Makhachev,moneyline,21,FanDuel,-390,▼
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,43741,2,Islam Makhachev,moneyline,24,Caesars,-360,▼
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,43741,2,Islam Makhachev,moneyline,25,BetRivers,-360,▼
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,43741,2,Islam Makhachev,moneyline,20,BetWay,-333,▲
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,43741,2,Islam Makhachev,moneyline,26,Unibet,-360,▼
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,43742,1,Gillian Robertson,moneyline,28,Polymarket,223,▲
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,43742,1,Gillian Robertson,moneyline,21,FanDuel,200,▲
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,43742,1,Gillian Robertson,moneyline,24,Caesars,190,▼
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,43742,1,Gillian Robertson,moneyline,25,BetRivers,188,▲
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,43742,1,Gillian Robertson,moneyline,20,BetWay,200,▲
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,43742,1,Gillian Robertson,moneyline,26,Unibet,188,▲
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,43742,2,Mackenzie Dern,moneyline,28,Polymarket,-233,
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,43742,2,Mackenzie Dern,moneyline,21,FanDuel,-265,▼
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,43742,2,Mackenzie Dern,moneyline,24,Caesars,-230,▲
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,43742,2,Mackenzie Dern,moneyline,25,BetRivers,-240,▼
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,43742,2,Mackenzie Dern,moneyline,20,BetWay,-250,▼
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,43742,2,Mackenzie Dern,moneyline,26,Unibet,-240,▼
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,44349,1,Jalin Turner,moneyline,28,Polymarket,-233,▲
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,44349,1,Jalin Turner,moneyline,24,Caesars,-150,▼
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,44349,2,Kaue Fernandes,moneyline,28,Polymarket,127,▲
+2026-08-06T03:35:43.565783+00:00,ufc-330-4297,UFC 330 Odds,44349,2,Kaue Fernandes,moneyline,24,Caesars,125,▲
+2026-08-06T03:35:43.565783+00:00,ufc-shanghai-4257,UFC Shanghai Odds,43928,1,Song Yadong,moneyline,21,FanDuel,350,
+2026-08-06T03:35:43.565783+00:00,ufc-shanghai-4257,UFC Shanghai Odds,43928,1,Song Yadong,moneyline,24,Caesars,325,▲
+2026-08-06T03:35:43.565783+00:00,ufc-shanghai-4257,UFC Shanghai Odds,43928,1,Song Yadong,moneyline,25,BetRivers,335,
+2026-08-06T03:35:43.565783+00:00,ufc-shanghai-4257,UFC Shanghai Odds,43928,1,Song Yadong,moneyline,20,BetWay,350,▲
+2026-08-06T03:35:43.565783+00:00,ufc-shanghai-4257,UFC Shanghai Odds,43928,1,Song Yadong,moneyline,26,Unibet,335,
+2026-08-06T03:35:43.565783+00:00,ufc-shanghai-4257,UFC Shanghai Odds,43928,2,Umar Nurmagomedov,moneyline,21,FanDuel,-520,
+2026-08-06T03:35:43.565783+00:00,ufc-shanghai-4257,UFC Shanghai Odds,43928,2,Umar Nurmagomedov,moneyline,24,Caesars,-500,▼
+2026-08-06T03:35:43.565783+00:00,ufc-shanghai-4257,UFC Shanghai Odds,43928,2,Umar Nurmagomedov,moneyline,25,BetRivers,-480,
+2026-08-06T03:35:43.565783+00:00,ufc-shanghai-4257,UFC Shanghai Odds,43928,2,Umar Nurmagomedov,moneyline,20,BetWay,-500,▼
+2026-08-06T03:35:43.565783+00:00,ufc-shanghai-4257,UFC Shanghai Odds,43928,2,Umar Nurmagomedov,moneyline,26,Unibet,-480,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44323,1,Mateusz Gamrot,moneyline,28,Polymarket,133,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44323,1,Mateusz Gamrot,moneyline,29,Kalshi,123,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44323,1,Mateusz Gamrot,moneyline,21,FanDuel,120,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44323,1,Mateusz Gamrot,moneyline,24,Caesars,120,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44323,1,Mateusz Gamrot,moneyline,25,BetRivers,116,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44323,1,Mateusz Gamrot,moneyline,20,BetWay,120,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44323,1,Mateusz Gamrot,moneyline,26,Unibet,116,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44323,2,Quillan Salkilld,moneyline,28,Polymarket,-138,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44323,2,Quillan Salkilld,moneyline,29,Kalshi,-149,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44323,2,Quillan Salkilld,moneyline,21,FanDuel,-154,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44323,2,Quillan Salkilld,moneyline,24,Caesars,-140,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44323,2,Quillan Salkilld,moneyline,25,BetRivers,-143,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44323,2,Quillan Salkilld,moneyline,20,BetWay,-150,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44323,2,Quillan Salkilld,moneyline,26,Unibet,-143,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44324,1,Billy Quarantillo,moneyline,29,Kalshi,145,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44324,1,Billy Quarantillo,moneyline,21,FanDuel,144,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44324,1,Billy Quarantillo,moneyline,24,Caesars,150,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44324,1,Billy Quarantillo,moneyline,25,BetRivers,143,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44324,1,Billy Quarantillo,moneyline,20,BetWay,150,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44324,1,Billy Quarantillo,moneyline,26,Unibet,143,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44324,2,Diego Ferreira,moneyline,29,Kalshi,-183,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44324,2,Diego Ferreira,moneyline,21,FanDuel,-186,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44324,2,Diego Ferreira,moneyline,24,Caesars,-180,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44324,2,Diego Ferreira,moneyline,25,BetRivers,-180,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44324,2,Diego Ferreira,moneyline,20,BetWay,-188,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44324,2,Diego Ferreira,moneyline,26,Unibet,-180,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44325,1,Darren Elkins,moneyline,29,Kalshi,572,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44325,1,Darren Elkins,moneyline,21,FanDuel,480,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44325,1,Darren Elkins,moneyline,24,Caesars,500,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44325,1,Darren Elkins,moneyline,25,BetRivers,800,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44325,1,Darren Elkins,moneyline,20,BetWay,450,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44325,1,Darren Elkins,moneyline,26,Unibet,480,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44325,2,Yadier Del Valle,moneyline,29,Kalshi,-791,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44325,2,Yadier Del Valle,moneyline,21,FanDuel,-800,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44325,2,Yadier Del Valle,moneyline,24,Caesars,-700,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44325,2,Yadier Del Valle,moneyline,25,BetRivers,-1430,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44325,2,Yadier Del Valle,moneyline,20,BetWay,-649,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44325,2,Yadier Del Valle,moneyline,26,Unibet,-715,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44329,1,Alexia Thainara,moneyline,29,Kalshi,-277,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44329,1,Alexia Thainara,moneyline,21,FanDuel,-265,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44329,1,Alexia Thainara,moneyline,24,Caesars,-265,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44329,1,Alexia Thainara,moneyline,25,BetRivers,-275,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44329,1,Alexia Thainara,moneyline,20,BetWay,-250,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44329,1,Alexia Thainara,moneyline,26,Unibet,-275,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44329,2,Amanda Lemos,moneyline,29,Kalshi,228,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44329,2,Amanda Lemos,moneyline,21,FanDuel,200,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44329,2,Amanda Lemos,moneyline,24,Caesars,215,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44329,2,Amanda Lemos,moneyline,25,BetRivers,210,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44329,2,Amanda Lemos,moneyline,20,BetWay,200,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44329,2,Amanda Lemos,moneyline,26,Unibet,210,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44326,1,Billy Ray Goff,moneyline,29,Kalshi,312,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44326,1,Billy Ray Goff,moneyline,21,FanDuel,265,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44326,1,Billy Ray Goff,moneyline,24,Caesars,310,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44326,1,Billy Ray Goff,moneyline,25,BetRivers,265,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44326,1,Billy Ray Goff,moneyline,20,BetWay,260,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44326,1,Billy Ray Goff,moneyline,26,Unibet,265,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44326,2,Ty Miller,moneyline,29,Kalshi,-405,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44326,2,Ty Miller,moneyline,21,FanDuel,-370,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44326,2,Ty Miller,moneyline,24,Caesars,-400,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44326,2,Ty Miller,moneyline,25,BetRivers,-360,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44326,2,Ty Miller,moneyline,20,BetWay,-350,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4295,UFC Vegas 120 Odds,44326,2,Ty Miller,moneyline,26,Unibet,-360,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44328,1,Guilherme Pat,moneyline,28,Polymarket,257,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44328,1,Guilherme Pat,moneyline,29,Kalshi,252,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44328,1,Guilherme Pat,moneyline,21,FanDuel,235,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44328,1,Guilherme Pat,moneyline,24,Caesars,230,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44328,1,Guilherme Pat,moneyline,25,BetRivers,220,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44328,1,Guilherme Pat,moneyline,20,BetWay,210,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44328,1,Guilherme Pat,moneyline,26,Unibet,220,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44328,2,Steven Asplund,moneyline,28,Polymarket,-270,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44328,2,Steven Asplund,moneyline,29,Kalshi,-307,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44328,2,Steven Asplund,moneyline,21,FanDuel,-320,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44328,2,Steven Asplund,moneyline,24,Caesars,-280,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44328,2,Steven Asplund,moneyline,25,BetRivers,-286,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44328,2,Steven Asplund,moneyline,20,BetWay,-275,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44328,2,Steven Asplund,moneyline,26,Unibet,-286,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44331,1,Bruno Lopes,moneyline,28,Polymarket,144,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44331,1,Bruno Lopes,moneyline,29,Kalshi,140,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44331,1,Bruno Lopes,moneyline,21,FanDuel,128,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44331,1,Bruno Lopes,moneyline,24,Caesars,130,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44331,1,Bruno Lopes,moneyline,25,BetRivers,123,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44331,1,Bruno Lopes,moneyline,20,BetWay,130,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44331,1,Bruno Lopes,moneyline,26,Unibet,123,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44331,2,Diyar Nurgozhay,moneyline,28,Polymarket,-150,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44331,2,Diyar Nurgozhay,moneyline,29,Kalshi,-168,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44331,2,Diyar Nurgozhay,moneyline,21,FanDuel,-164,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44331,2,Diyar Nurgozhay,moneyline,24,Caesars,-155,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44331,2,Diyar Nurgozhay,moneyline,25,BetRivers,-155,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44331,2,Diyar Nurgozhay,moneyline,20,BetWay,-163,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44331,2,Diyar Nurgozhay,moneyline,26,Unibet,-155,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44327,1,Jose Montanha,moneyline,29,Kalshi,134,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44327,1,Jose Montanha,moneyline,21,FanDuel,126,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44327,1,Jose Montanha,moneyline,24,Caesars,155,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44327,1,Jose Montanha,moneyline,25,BetRivers,133,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44327,1,Jose Montanha,moneyline,20,BetWay,140,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44327,1,Jose Montanha,moneyline,26,Unibet,133,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44327,2,Louie Sutherland,moneyline,29,Kalshi,-176,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44327,2,Louie Sutherland,moneyline,21,FanDuel,-162,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44327,2,Louie Sutherland,moneyline,24,Caesars,-185,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44327,2,Louie Sutherland,moneyline,25,BetRivers,-167,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44327,2,Louie Sutherland,moneyline,20,BetWay,-175,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44327,2,Louie Sutherland,moneyline,26,Unibet,-167,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44335,1,Manoel Sousa,moneyline,29,Kalshi,-264,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44335,1,Manoel Sousa,moneyline,21,FanDuel,-265,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44335,1,Manoel Sousa,moneyline,24,Caesars,-270,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44335,1,Manoel Sousa,moneyline,25,BetRivers,-265,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44335,1,Manoel Sousa,moneyline,20,BetWay,-250,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44335,1,Manoel Sousa,moneyline,26,Unibet,-265,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44335,2,Richie Miranda,moneyline,29,Kalshi,217,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44335,2,Richie Miranda,moneyline,21,FanDuel,200,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44335,2,Richie Miranda,moneyline,24,Caesars,220,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44335,2,Richie Miranda,moneyline,25,BetRivers,205,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44335,2,Richie Miranda,moneyline,20,BetWay,200,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44335,2,Richie Miranda,moneyline,26,Unibet,205,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44334,1,Jessie Rosas,moneyline,29,Kalshi,128,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44334,1,Jessie Rosas,moneyline,21,FanDuel,132,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44334,1,Jessie Rosas,moneyline,24,Caesars,130,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44334,1,Jessie Rosas,moneyline,25,BetRivers,130,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44334,1,Jessie Rosas,moneyline,20,BetWay,130,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44334,1,Jessie Rosas,moneyline,26,Unibet,130,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44334,2,Miles Johns,moneyline,29,Kalshi,-155,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44334,2,Miles Johns,moneyline,21,FanDuel,-170,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44334,2,Miles Johns,moneyline,24,Caesars,-155,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44334,2,Miles Johns,moneyline,25,BetRivers,-162,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44334,2,Miles Johns,moneyline,20,BetWay,-163,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44334,2,Miles Johns,moneyline,26,Unibet,-162,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44395,1,Carol Foro,moneyline,29,Kalshi,-307,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44395,1,Carol Foro,moneyline,21,FanDuel,-295,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44395,2,Gigi Canuto,moneyline,29,Kalshi,217,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44395,2,Gigi Canuto,moneyline,21,FanDuel,220,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44330,1,Juliana Miller,moneyline,29,Kalshi,-323,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44330,1,Juliana Miller,moneyline,21,FanDuel,-290,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44330,1,Juliana Miller,moneyline,24,Caesars,-300,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44330,1,Juliana Miller,moneyline,25,BetRivers,-295,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44330,1,Juliana Miller,moneyline,20,BetWay,-275,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44330,1,Juliana Miller,moneyline,26,Unibet,-295,▼
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44330,2,Ravena Oliveira,moneyline,29,Kalshi,252,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44330,2,Ravena Oliveira,moneyline,21,FanDuel,215,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44330,2,Ravena Oliveira,moneyline,24,Caesars,240,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44330,2,Ravena Oliveira,moneyline,25,BetRivers,225,▲
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44330,2,Ravena Oliveira,moneyline,20,BetWay,210,
+2026-08-06T03:35:43.565783+00:00,ufc-vegas-120-4301,UFC Vegas 120 Odds,44330,2,Ravena Oliveira,moneyline,26,Unibet,225,▲
